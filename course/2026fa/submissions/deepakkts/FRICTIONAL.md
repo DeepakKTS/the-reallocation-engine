@@ -4,8 +4,8 @@ Two voices in this file and they are kept apart. Sections marked **[AI]** are th
 factual record of what Claude attempted: a planning session in chat, and a session
 in Claude Code against a clone of the repository, both on 2026-10-03. Sections
 marked **[ME]** hold the student's part: the operator decisions made in the Claude
-Code session, recorded by the AI and labelled as such, and three questions only
-the student can answer, left blank.
+Code session, recorded by the AI and labelled as such, and the student's answers
+to three questions only the student can answer.
 
 ---
 
@@ -271,7 +271,25 @@ are decisions the operator made; the wording here is the AI's.
 
 1. The day estimates in `targets.real.json` (75 to 150) are the AI's: from my own applications so far, which one is furthest off, and in which direction?
    Answer:
+
+   The 150-day estimate on Anthropic Data Engineer is the one I would bet against, and it is too short. Large-company processes I have been through ran longer than I would have guessed; small ones landed near the estimate or faster.
+
+   Where that error bites matters. At a 2026-10-03 run date with the clock starting 2027-01-15, a factor only starts falling past roughly 164 days, so the 75 and 90 day roles are insulated and stay at 1 even if I am badly wrong. The 150-day role is the only one near that edge.
+
+   That role is in the networking bucket anyway, so its estimate never reaches the scorer. A longer process could only move it from networking to dropped, at roughly 194 days. The estimate I trust least is currently doing no work at all, which says more about the target list than about the estimate.
+
+   These estimates are the AI's, not mine. I am accepting them rather than sourcing them, and no data in the repo can check them.
+
 2. Every Proven-tier role scored Apply whatever its fit: do I change `TIER_PROBABILITY`, raise it with the maintainer, or leave it, and why?
    Answer:
+
+   Leaving it at 0.9 and raising it with the maintainer.
+
+   I could make the symptom vanish by moving one constant: Proven at 0.85 gives 0.2975, under the 0.30 threshold. That is the reason not to. The verdict flips once Proven drops below about 0.857, a hair under the 0.9 I chose for no sourced reason, so the result is fragile across all three numbers and tuning the one I own would hide that rather than report it. DOMAIN.md already treats the weighting as the maintainer's open decision.
+
+   The accurate statement is the narrow one: with both gates open, fit cannot change the verdict for a Proven-tier role.
+
 3. Which of the AI's changes did I check myself against the diff, and what did I look for?
    Answer:
+
+   I did not review the diffs myself. The eight changes were made and tested by the AI, and I am accepting them on the strength of a test suite written in the same session as the code it tests. That is the weakest link in this submission and I would rather state it than claim a review I did not do.

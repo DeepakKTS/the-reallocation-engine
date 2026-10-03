@@ -73,7 +73,6 @@ the repository's own `pii-scan` walks the whole working tree, as it is designed 
   conditions; chose the persona's dates; authorised the code changes after the
   first stop; set the constraints on target selection and on how funding is
   presented. Those decisions are listed in the `[ME]` section of
-  `FRICTIONAL.md`, where three questions are left for the operator to answer in
-  their own words.
+  `FRICTIONAL.md`, which also records the operator's answers to three questions.
 
 Nothing in this submission claims a command was run that was not run.
