@@ -19,8 +19,12 @@
   ```
   Tests: `node --test scripts/contrib/2026fa/deepakkts-opt-start-window/test/opt-start-window.test.mjs`
 - **GitHub repository / branch / PR URL:** https://github.com/DeepakKTS/the-reallocation-engine /
-  `contrib/2026fa-deepakkts-opt-start-window` / PR_URL_PENDING
-- **Submitted commit SHA:** SHA_PENDING
+  `contrib/2026fa-deepakkts-opt-start-window` /
+  https://github.com/nikbearbrown/the-reallocation-engine/pull/25
+- **Submitted commit SHA:** `09f1cc6b3d6838ac25a5c7b3e9b7ed5766017872` (the content
+  commit). The PR head and the Canvas ZIP are the next commit, which changes only
+  this file to record this SHA and the PR URL; a file cannot contain its own
+  commit's SHA.
 - **Lifecycle stage claimed:** RUNNABLE-SAMPLE
 
 ## Summary of my changes
