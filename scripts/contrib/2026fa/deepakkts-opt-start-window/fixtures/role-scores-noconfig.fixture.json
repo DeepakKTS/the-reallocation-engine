@@ -1,0 +1,5 @@
+{
+  "_note": "scorer output with no config block, to prove the fit-rescue check is skipped rather than defaulted",
+  "_scorer": "bayesian-role-scorer",
+  "roles": []
+}

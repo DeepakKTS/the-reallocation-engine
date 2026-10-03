@@ -1,0 +1,74 @@
+{
+  "_note": "Fictional companies. liveness is a record from `npm run ats:liveness`; null means not checked and the role is held at the gate. fit is the operator's own model judgment.",
+  "roles": [
+    {
+      "company": "Harborline Robotics, Inc.",
+      "title": "Machine Learning Engineer",
+      "soc_code": "15-2051",
+      "url": "https://jobs.example.com/harborline/ml-engineer",
+      "expected_days_to_start": 45,
+      "fit": 0.72,
+      "liveness": 1.0,
+      "liveness_checked_at": "2026-10-02"
+    },
+    {
+      "company": "Cedarmill Analytics LLC",
+      "title": "Data Scientist, Platform",
+      "soc_code": "15-2051",
+      "url": "https://jobs.example.com/cedarmill/data-scientist",
+      "expected_days_to_start": 180,
+      "fit": 0.66,
+      "liveness": 1.0,
+      "liveness_checked_at": "2026-10-02"
+    },
+    {
+      "company": "Northgate Biosystems",
+      "title": "Research Engineer, ML",
+      "soc_code": "15-2051",
+      "url": "https://jobs.example.com/northgate/research-engineer",
+      "expected_days_to_start": 200,
+      "fit": 0.80,
+      "liveness": 1.0,
+      "liveness_checked_at": "2026-10-02"
+    },
+    {
+      "company": "Quarrystone Federal Systems",
+      "title": "Applied Scientist",
+      "soc_code": "15-2051",
+      "url": "https://jobs.example.com/quarrystone/applied-scientist",
+      "expected_days_to_start": 500,
+      "fit": 0.60,
+      "liveness": 1.0,
+      "liveness_checked_at": "2026-10-02"
+    },
+    {
+      "company": "Pellucid Grid Co",
+      "title": "Software Engineer, ML Infrastructure",
+      "soc_code": "15-1252",
+      "url": "https://jobs.example.com/pellucid/ml-infra",
+      "expected_days_to_start": 90,
+      "fit": 0.70,
+      "liveness": null
+    },
+    {
+      "company": "Vantage Loom Technologies",
+      "title": "AI Engineer",
+      "soc_code": "15-2051",
+      "url": "https://jobs.example.com/vantageloom/ai-engineer",
+      "expected_days_to_start": 60,
+      "fit": 0.75,
+      "liveness": 1.0,
+      "liveness_checked_at": "2026-10-02"
+    },
+    {
+      "company": "Lakeview Mutual Holdings",
+      "title": "Data Scientist, Actuarial",
+      "soc_code": "15-2051",
+      "url": "https://jobs.example.com/lakeview/data-scientist",
+      "expected_days_to_start": 60,
+      "fit": 0.82,
+      "liveness": 1.0,
+      "liveness_checked_at": "2026-10-02"
+    }
+  ]
+}

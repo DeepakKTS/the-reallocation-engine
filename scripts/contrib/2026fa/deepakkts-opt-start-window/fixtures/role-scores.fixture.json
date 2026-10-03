@@ -1,0 +1,20 @@
+{
+  "_note": "config block copied verbatim from role-scores.json written by scripts/score/role-scorer.mjs on 2026-10-03; roles omitted",
+  "_scorer": "bayesian-role-scorer",
+  "config": {
+    "weights": {
+      "sponsorship": 0.35,
+      "fit": 0.3,
+      "role_quality": 0
+    },
+    "apply_threshold": 0.3,
+    "consider_floor": 0.2,
+    "gate_zero": 0.05,
+    "soft_sponsorship_tiers": [
+      "likely",
+      "possible",
+      "unknown"
+    ]
+  },
+  "roles": []
+}

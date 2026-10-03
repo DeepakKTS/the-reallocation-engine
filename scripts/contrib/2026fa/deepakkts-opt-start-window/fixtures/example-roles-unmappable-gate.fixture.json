@@ -1,0 +1,7 @@
+[
+  { "company": "Example Biotech", "title": "Data Scientist",
+    "sponsorship": { "p": 0.9, "tier": "Proven", "source": "record" },
+    "fit": { "p": 0.7, "source": "model-judgment" },
+    "liveness": { "factor": 1.0, "source": "record" },
+    "timeline": { "weird": 0.85, "source": "your-input" } }
+]

@@ -1,0 +1,14 @@
+{
+  "_note": "Fictional persona. Every value here is your-input. Point --intake at a file outside the repository for your real dates; nothing real belongs in a tracked fixture.",
+  "persona": "Persona A, international M.S. graduate, contact persona-a@example.com",
+  "as_of": "2026-10-03",
+  "auth_type": "OPT",
+  "auth_start_date": "2027-01-15",
+  "auth_end_date": "2028-01-18",
+  "_auth_end_note": "auth_end_date is a persona assumption. It is not a determination of anyone's authorisation period.",
+  "unemployment_days_used": 0,
+  "unemployment_ceiling_days": 90,
+  "buffer_target_days": 60,
+  "stem_eligible": true,
+  "_stem_note": "Supplied by the persona, not determined here. Real eligibility is a question for a DSO or an immigration attorney."
+}

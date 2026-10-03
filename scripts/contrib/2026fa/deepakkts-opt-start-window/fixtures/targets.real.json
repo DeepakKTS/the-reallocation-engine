@@ -1,0 +1,125 @@
+{
+  "_note": "Real companies and real postings, public record. Company names are spelled as in data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv where present. liveness is the result of `npm run ats:liveness` run on 2026-10-03T18:19Z: all ten printed `active`, entered as 1.0 by the operator mapping active=1.0, expired=0.0, uncertain=null. soc_code is the operator's assignment of the posting title (your-input). Two companies (Anthropic, Scale AI) are absent from the 80 Days CSV on purpose, and Vercel is present with an empty Total Approvals cell on purpose.",
+  "roles": [
+    {
+      "company": "Reddit Inc",
+      "title": "Machine Learning Engineer",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/reddit/jobs/8244082",
+      "expected_days_to_start": 120,
+      "_expected_days_basis": "estimate (AI model judgment, not a record): application in the week of as_of, a 4 to 8 week interview loop, 2 to 4 weeks for offer and background check, start set after a December completion; longer for large employers; large public employer",
+      "fit": 0.6,
+      "_fit_basis": "model-judgment by the AI session against the invented persona (M.S. graduate, AI/ML and data focus, no full-time experience), from the posting title and seniority only; no posting body and no resume read",
+      "liveness": 1,
+      "liveness_checked_at": "2026-10-03"
+    },
+    {
+      "company": "Discord Inc",
+      "title": "Data Scientist - Client Platform",
+      "soc_code": "15-2051",
+      "url": "https://job-boards.greenhouse.io/discord/jobs/8840756002",
+      "expected_days_to_start": 105,
+      "_expected_days_basis": "estimate (AI model judgment, not a record): application in the week of as_of, a 4 to 8 week interview loop, 2 to 4 weeks for offer and background check, start set after a December completion; longer for large employers; mid-size private employer",
+      "fit": 0.7,
+      "_fit_basis": "model-judgment by the AI session against the invented persona (M.S. graduate, AI/ML and data focus, no full-time experience), from the posting title and seniority only; no posting body and no resume read",
+      "liveness": 1,
+      "liveness_checked_at": "2026-10-03"
+    },
+    {
+      "company": "Moloco Inc",
+      "title": "Data Scientist II, Product - Moloco Commerce Media",
+      "soc_code": "15-2051",
+      "url": "https://job-boards.greenhouse.io/moloco/jobs/7985823003",
+      "expected_days_to_start": 90,
+      "_expected_days_basis": "estimate (AI model judgment, not a record): application in the week of as_of, a 4 to 8 week interview loop, 2 to 4 weeks for offer and background check, start set after a December completion; longer for large employers; mid-size private employer",
+      "fit": 0.65,
+      "_fit_basis": "model-judgment by the AI session against the invented persona (M.S. graduate, AI/ML and data focus, no full-time experience), from the posting title and seniority only; no posting body and no resume read",
+      "liveness": 1,
+      "liveness_checked_at": "2026-10-03"
+    },
+    {
+      "company": "Airbnb Inc",
+      "title": "Data Scientist - Algorithms, Community Support",
+      "soc_code": "15-2051",
+      "url": "https://careers.airbnb.com/positions/8031901?gh_jid=8031901",
+      "expected_days_to_start": 120,
+      "_expected_days_basis": "estimate (AI model judgment, not a record): application in the week of as_of, a 4 to 8 week interview loop, 2 to 4 weeks for offer and background check, start set after a December completion; longer for large employers; large public employer",
+      "fit": 0.6,
+      "_fit_basis": "model-judgment by the AI session against the invented persona (M.S. graduate, AI/ML and data focus, no full-time experience), from the posting title and seniority only; no posting body and no resume read",
+      "liveness": 1,
+      "liveness_checked_at": "2026-10-03"
+    },
+    {
+      "company": "Attentive Mobile Inc",
+      "title": "Senior Machine Learning Engineer",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/attentive/jobs/4120595009",
+      "expected_days_to_start": 120,
+      "_expected_days_basis": "estimate (AI model judgment, not a record): application in the week of as_of, a 4 to 8 week interview loop, 2 to 4 weeks for offer and background check, start set after a December completion; longer for large employers; senior role, longer loop",
+      "fit": 0.35,
+      "_fit_basis": "model-judgment by the AI session against the invented persona (M.S. graduate, AI/ML and data focus, no full-time experience), from the posting title and seniority only; no posting body and no resume read",
+      "liveness": 1,
+      "liveness_checked_at": "2026-10-03"
+    },
+    {
+      "company": "Cellanome Inc",
+      "title": "Machine Learning Engineer",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/cellanome/jobs/4683977006",
+      "expected_days_to_start": 75,
+      "_expected_days_basis": "estimate (AI model judgment, not a record): application in the week of as_of, a 4 to 8 week interview loop, 2 to 4 weeks for offer and background check, start set after a December completion; longer for large employers; small private employer, shorter loop",
+      "fit": 0.55,
+      "_fit_basis": "model-judgment by the AI session against the invented persona (M.S. graduate, AI/ML and data focus, no full-time experience), from the posting title and seniority only; no posting body and no resume read",
+      "liveness": 1,
+      "liveness_checked_at": "2026-10-03"
+    },
+    {
+      "company": "FourKites Inc",
+      "title": "Senior AI Engineer",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/fourkites/jobs/8212401",
+      "expected_days_to_start": 90,
+      "_expected_days_basis": "estimate (AI model judgment, not a record): application in the week of as_of, a 4 to 8 week interview loop, 2 to 4 weeks for offer and background check, start set after a December completion; longer for large employers; mid-size private employer, senior role",
+      "fit": 0.4,
+      "_fit_basis": "model-judgment by the AI session against the invented persona (M.S. graduate, AI/ML and data focus, no full-time experience), from the posting title and seniority only; no posting body and no resume read",
+      "liveness": 1,
+      "liveness_checked_at": "2026-10-03"
+    },
+    {
+      "company": "Anthropic",
+      "title": "Data Engineer",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/anthropic/jobs/4956672008",
+      "expected_days_to_start": 150,
+      "_expected_days_basis": "estimate (AI model judgment, not a record): application in the week of as_of, a 4 to 8 week interview loop, 2 to 4 weeks for offer and background check, start set after a December completion; longer for large employers; large applicant pool, long loop",
+      "fit": 0.45,
+      "_fit_basis": "model-judgment by the AI session against the invented persona (M.S. graduate, AI/ML and data focus, no full-time experience), from the posting title and seniority only; no posting body and no resume read",
+      "liveness": 1,
+      "liveness_checked_at": "2026-10-03"
+    },
+    {
+      "company": "Scale AI",
+      "title": "Machine Learning Research Scientist, Evaluations",
+      "soc_code": "15-2051",
+      "url": "https://job-boards.greenhouse.io/scaleai/jobs/4728014005",
+      "expected_days_to_start": 120,
+      "_expected_days_basis": "estimate (AI model judgment, not a record): application in the week of as_of, a 4 to 8 week interview loop, 2 to 4 weeks for offer and background check, start set after a December completion; longer for large employers; research role, long loop",
+      "fit": 0.4,
+      "_fit_basis": "model-judgment by the AI session against the invented persona (M.S. graduate, AI/ML and data focus, no full-time experience), from the posting title and seniority only; no posting body and no resume read",
+      "liveness": 1,
+      "liveness_checked_at": "2026-10-03"
+    },
+    {
+      "company": "Vercel Inc",
+      "title": "Software Engineer, AI SDK",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/vercel/jobs/5474915004",
+      "expected_days_to_start": 105,
+      "_expected_days_basis": "estimate (AI model judgment, not a record): application in the week of as_of, a 4 to 8 week interview loop, 2 to 4 weeks for offer and background check, start set after a December completion; longer for large employers; mid-size private employer",
+      "fit": 0.45,
+      "_fit_basis": "model-judgment by the AI session against the invented persona (M.S. graduate, AI/ML and data focus, no full-time experience), from the posting title and seniority only; no posting body and no resume read",
+      "liveness": 1,
+      "liveness_checked_at": "2026-10-03"
+    }
+  ]
+}

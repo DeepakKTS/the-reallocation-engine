@@ -1,0 +1,17 @@
+[
+  { "role_id": "fixture-proven", "company": "Example Biotech", "title": "Data Scientist",
+    "sponsorship": { "p": 0.9, "tier": "Proven", "source": "record" },
+    "fit": { "p": 0.7, "source": "model-judgment" },
+    "liveness": { "factor": 1.0, "source": "record" },
+    "timeline": { "factor": 0.85, "source": "your-input" } },
+  { "role_id": "fixture-likely", "company": "Example Analytics", "title": "Data Scientist",
+    "sponsorship": { "p": 0.6, "tier": "Likely", "source": "record" },
+    "fit": { "p": 0.8, "source": "model-judgment" },
+    "liveness": { "factor": 1.0, "source": "record" },
+    "timeline": { "factor": 0.9, "source": "your-input" } },
+  { "role_id": "fixture-none", "company": "Example Insurer", "title": "Data Scientist",
+    "sponsorship": { "p": 0.0, "tier": "None", "source": "record" },
+    "fit": { "p": 0.7, "source": "model-judgment" },
+    "liveness": { "factor": 1.0, "source": "record" },
+    "timeline": { "factor": 0.85, "source": "your-input" } }
+]

@@ -1,0 +1,2454 @@
+{
+  "run_id": "2026-10-03-opt-start-window",
+  "recipe": "recipes/cases/2026fa/deepakkts-opt-start-window.md",
+  "recipe_version": "0.1.0",
+  "recipe_status": "RUNNABLE-SAMPLE",
+  "generated_at": "2026-10-03T18:31:33.582Z",
+  "repo_root": ".",
+  "sources": [
+    {
+      "what": "80 Days sponsorship CSV",
+      "path": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+      "sha256": "eccdee2addf472b1",
+      "note": "columns used: {\"company\":\"company_name\",\"tier\":null,\"count\":\"Total Approvals\",\"soc\":null}; approvals cell empty in 28812 of 30369 rows (missing, never read as 0); no SOC column, so sponsorship is company-wide and never narrowed to the target SOC code"
+    },
+    {
+      "what": "SEC Form D samples",
+      "path": "data/sec/form-d/processed/sample",
+      "sha256": null,
+      "note": "4 JSON file(s) scanned, 200 record(s) read, 196 issuer(s) indexed, 0 date(s) rejected as unparseable, 0 file(s) unrecognised; full quarters are gitignored, so a miss here means \"not in the sample\", not \"no funding\""
+    },
+    {
+      "what": "BLS compact occupation table",
+      "path": "data/bls/compact/soc_occupation_compact.csv",
+      "sha256": "bac5acf77ca2d252",
+      "note": "looked up by bls_soc_code; where a code has several rows the onet_soc_code .00 base row is kept"
+    },
+    {
+      "what": "Scorer input contract (schema learned from this file)",
+      "path": "data/examples/ch11-roles.json",
+      "sha256": "daf9fef43408a492",
+      "note": "keys={\"company\":\"company\",\"title\":\"title\",\"soc\":null,\"url\":null,\"sponsorship\":\"sponsorship\",\"fit\":\"fit\",\"liveness\":\"liveness\",\"timeline\":\"timeline\",\"funding\":null,\"role_quality\":null}; value field per term={\"sponsorship\":\"p\",\"fit\":\"p\",\"liveness\":\"factor\",\"timeline\":\"factor\"}; tier vocabulary=[\"Proven\",\"None\",\"Likely\"]"
+    },
+    {
+      "what": "Scorer weights for the fit-rescue check",
+      "path": "scripts/score/role-scorer.mjs (config block of role-scores.json from a probe run)",
+      "sha256": null,
+      "note": "sponsorship 0.35, fit 0.3"
+    },
+    {
+      "what": "Intake",
+      "path": "scripts/contrib/2026fa/deepakkts-opt-start-window/fixtures/intake.sample.json",
+      "sha256": "baf86670ea04921a",
+      "note": "every field your-input"
+    },
+    {
+      "what": "Targets",
+      "path": "scripts/contrib/2026fa/deepakkts-opt-start-window/fixtures/targets.real.json",
+      "sha256": "b5485703ed1c1c9b",
+      "note": "liveness values come from npm run ats:liveness; fit is an operator estimate"
+    }
+  ],
+  "intake": {
+    "as_of": "2026-10-03",
+    "auth_type": "OPT",
+    "auth_start_date": "2027-01-15",
+    "auth_end_date": "2028-01-18",
+    "unemployment_days_used": 0,
+    "unemployment_ceiling_days": 90,
+    "buffer_target_days": 60,
+    "stem_eligible": true
+  },
+  "tier_probability_mapping": {
+    "proven": 0.9,
+    "likely": 0.6,
+    "occasional": 0.3,
+    "none": 0
+  },
+  "schema": {
+    "keys": {
+      "company": "company",
+      "title": "title",
+      "soc": null,
+      "url": null,
+      "sponsorship": "sponsorship",
+      "fit": "fit",
+      "liveness": "liveness",
+      "timeline": "timeline",
+      "funding": null,
+      "role_quality": null
+    },
+    "terms": {
+      "sponsorship": {
+        "shape": "object",
+        "valueField": "p",
+        "sourceField": "source",
+        "tierField": "tier",
+        "observedKeys": [
+          "p",
+          "tier",
+          "source"
+        ]
+      },
+      "fit": {
+        "shape": "object",
+        "valueField": "p",
+        "sourceField": "source",
+        "tierField": null,
+        "observedKeys": [
+          "p",
+          "source"
+        ]
+      },
+      "liveness": {
+        "shape": "object",
+        "valueField": "factor",
+        "sourceField": "source",
+        "tierField": null,
+        "observedKeys": [
+          "factor",
+          "source"
+        ]
+      },
+      "timeline": {
+        "shape": "object",
+        "valueField": "factor",
+        "sourceField": "source",
+        "tierField": null,
+        "observedKeys": [
+          "factor",
+          "source"
+        ]
+      }
+    },
+    "tierVocabulary": [
+      "Proven",
+      "None",
+      "Likely"
+    ],
+    "sourceMapField": null,
+    "exampleRoleKeys": [
+      "role_id",
+      "company",
+      "title",
+      "sponsorship",
+      "fit",
+      "liveness",
+      "timeline",
+      "override"
+    ],
+    "examplePath": "data/examples/ch11-roles.json"
+  },
+  "roles": [
+    {
+      "company": "Reddit Inc",
+      "title": "Machine Learning Engineer",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/reddit/jobs/8244082",
+      "bucket": "scored",
+      "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+      "timeline": {
+        "factor": 1,
+        "reason": "inside-buffer",
+        "trace": {
+          "as_of": "2026-10-03",
+          "expected_days_to_start": 120,
+          "projected_start": "2027-01-31",
+          "auth_type": "OPT",
+          "auth_start_date": "2027-01-15",
+          "auth_end_date": "2028-01-18",
+          "days_to_auth_end": 472,
+          "unemployment_days_used": 0,
+          "unemployment_days_added_by_this_process": 16,
+          "projected_unemployment_total": 16,
+          "unemployment_ceiling_days": 90,
+          "buffer_target_days": 60,
+          "stem_eligible_as_supplied": true
+        }
+      },
+      "terms": {
+        "sponsorship": {
+          "value": 0.9,
+          "source": "your-input",
+          "basis": "approvals:408",
+          "evidence": {
+            "status": "ok",
+            "company_key": "reddit",
+            "tier": null,
+            "approvals": 408,
+            "rows_matched": 1,
+            "soc_narrowed": false,
+            "soc_code": null,
+            "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+            "source_columns": {
+              "company": "company_name",
+              "tier": null,
+              "count": "Total Approvals",
+              "soc": null
+            }
+          },
+          "tier_emitted": "Proven",
+          "tier_note": null,
+          "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+        },
+        "fit": {
+          "value": 0.6,
+          "source": "model-judgment",
+          "basis": "operator estimate of CV against the posting"
+        },
+        "liveness": {
+          "value": 1,
+          "source": "record",
+          "basis": "npm run ats:liveness, checked 2026-10-03"
+        },
+        "timeline": {
+          "value": 1,
+          "source": "your-input",
+          "basis": "inside-buffer"
+        },
+        "funding": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-form-d-match"
+        }
+      },
+      "role_quality": {
+        "status": "ok",
+        "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+        "row": {
+          "onet_soc_code": "15-1252.00",
+          "bls_soc_code": "15-1252",
+          "title": "Software Developers",
+          "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+          "job_zone": "4",
+          "alternate_title_count": "93",
+          "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+          "oews_year": "2024",
+          "employment": "1654440.0",
+          "annual_mean_wage": "144570.0",
+          "annual_median_wage": "133080.0",
+          "hourly_mean_wage": "69.5",
+          "hourly_median_wage": "63.98",
+          "employment_prse": "0.7",
+          "ability_originality_lv": "3.38",
+          "ability_problem_sensitivity_lv": "3.88",
+          "ability_deductive_reasoning_lv": "4.0",
+          "ability_inductive_reasoning_lv": "3.88",
+          "ability_selective_attention_lv": "2.88",
+          "ability_oral_comprehension_lv": "4.12",
+          "skill_programming_lv": "",
+          "skill_critical_thinking_lv": "4.12",
+          "skill_judgment_decision_making_lv": "3.75",
+          "skill_complex_problem_solving_lv": "3.5",
+          "skill_systems_analysis_lv": "3.88",
+          "skill_systems_evaluation_lv": "4.12",
+          "skill_social_perceptiveness_lv": "3.38",
+          "skill_active_listening_lv": "3.88",
+          "skill_persuasion_lv": "3.12",
+          "skill_instructing_lv": "3.12",
+          "skill_service_orientation_lv": "3.0",
+          "cognitive_pivot_score": "3.834"
+        },
+        "detailed_rows_skipped": [],
+        "source_file": "data/bls/compact/soc_occupation_compact.csv"
+      }
+    },
+    {
+      "company": "Discord Inc",
+      "title": "Data Scientist - Client Platform",
+      "soc_code": "15-2051",
+      "url": "https://job-boards.greenhouse.io/discord/jobs/8840756002",
+      "bucket": "scored",
+      "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+      "timeline": {
+        "factor": 1,
+        "reason": "inside-buffer",
+        "trace": {
+          "as_of": "2026-10-03",
+          "expected_days_to_start": 105,
+          "projected_start": "2027-01-16",
+          "auth_type": "OPT",
+          "auth_start_date": "2027-01-15",
+          "auth_end_date": "2028-01-18",
+          "days_to_auth_end": 472,
+          "unemployment_days_used": 0,
+          "unemployment_days_added_by_this_process": 1,
+          "projected_unemployment_total": 1,
+          "unemployment_ceiling_days": 90,
+          "buffer_target_days": 60,
+          "stem_eligible_as_supplied": true
+        }
+      },
+      "terms": {
+        "sponsorship": {
+          "value": 0.9,
+          "source": "your-input",
+          "basis": "approvals:122",
+          "evidence": {
+            "status": "ok",
+            "company_key": "discord",
+            "tier": null,
+            "approvals": 122,
+            "rows_matched": 1,
+            "soc_narrowed": false,
+            "soc_code": null,
+            "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+            "source_columns": {
+              "company": "company_name",
+              "tier": null,
+              "count": "Total Approvals",
+              "soc": null
+            }
+          },
+          "tier_emitted": "Proven",
+          "tier_note": null,
+          "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+        },
+        "fit": {
+          "value": 0.7,
+          "source": "model-judgment",
+          "basis": "operator estimate of CV against the posting"
+        },
+        "liveness": {
+          "value": 1,
+          "source": "record",
+          "basis": "npm run ats:liveness, checked 2026-10-03"
+        },
+        "timeline": {
+          "value": 1,
+          "source": "your-input",
+          "basis": "inside-buffer"
+        },
+        "funding": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-form-d-match"
+        }
+      },
+      "role_quality": {
+        "status": "ok",
+        "summary": "SOC 15-2051 row present (weighted 0.0 by the scorer); base row kept, 2 detailed row(s) skipped: Business Intelligence Analysts, Clinical Data Managers",
+        "row": {
+          "onet_soc_code": "15-2051.00",
+          "bls_soc_code": "15-2051",
+          "title": "Data Scientists",
+          "description": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.",
+          "job_zone": "4",
+          "alternate_title_count": "33",
+          "alternate_titles_sample": "Analytics Consultant; Applied Scientist; Data Analyst; Data Analytic Scientist; Data Analytics Manager; Data Analytics Scientist; Data Analytics Specialist; Data Architect",
+          "oews_year": "2024",
+          "employment": "233440.0",
+          "annual_mean_wage": "124590.0",
+          "annual_median_wage": "112590.0",
+          "hourly_mean_wage": "59.9",
+          "hourly_median_wage": "54.13",
+          "employment_prse": "1.7",
+          "ability_originality_lv": "",
+          "ability_problem_sensitivity_lv": "",
+          "ability_deductive_reasoning_lv": "",
+          "ability_inductive_reasoning_lv": "",
+          "ability_selective_attention_lv": "",
+          "ability_oral_comprehension_lv": "",
+          "skill_programming_lv": "",
+          "skill_critical_thinking_lv": "",
+          "skill_judgment_decision_making_lv": "",
+          "skill_complex_problem_solving_lv": "",
+          "skill_systems_analysis_lv": "",
+          "skill_systems_evaluation_lv": "",
+          "skill_social_perceptiveness_lv": "",
+          "skill_active_listening_lv": "",
+          "skill_persuasion_lv": "",
+          "skill_instructing_lv": "",
+          "skill_service_orientation_lv": "",
+          "cognitive_pivot_score": ""
+        },
+        "detailed_rows_skipped": [
+          {
+            "onet_soc_code": "15-2051.01",
+            "title": "Business Intelligence Analysts"
+          },
+          {
+            "onet_soc_code": "15-2051.02",
+            "title": "Clinical Data Managers"
+          }
+        ],
+        "source_file": "data/bls/compact/soc_occupation_compact.csv"
+      }
+    },
+    {
+      "company": "Moloco Inc",
+      "title": "Data Scientist II, Product - Moloco Commerce Media",
+      "soc_code": "15-2051",
+      "url": "https://job-boards.greenhouse.io/moloco/jobs/7985823003",
+      "bucket": "scored",
+      "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+      "timeline": {
+        "factor": 1,
+        "reason": "inside-buffer",
+        "trace": {
+          "as_of": "2026-10-03",
+          "expected_days_to_start": 90,
+          "projected_start": "2027-01-01",
+          "auth_type": "OPT",
+          "auth_start_date": "2027-01-15",
+          "auth_end_date": "2028-01-18",
+          "days_to_auth_end": 472,
+          "unemployment_days_used": 0,
+          "unemployment_days_added_by_this_process": 0,
+          "projected_unemployment_total": 0,
+          "unemployment_ceiling_days": 90,
+          "buffer_target_days": 60,
+          "stem_eligible_as_supplied": true
+        }
+      },
+      "terms": {
+        "sponsorship": {
+          "value": 0.9,
+          "source": "your-input",
+          "basis": "approvals:200",
+          "evidence": {
+            "status": "ok",
+            "company_key": "moloco",
+            "tier": null,
+            "approvals": 200,
+            "rows_matched": 1,
+            "soc_narrowed": false,
+            "soc_code": null,
+            "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+            "source_columns": {
+              "company": "company_name",
+              "tier": null,
+              "count": "Total Approvals",
+              "soc": null
+            }
+          },
+          "tier_emitted": "Proven",
+          "tier_note": null,
+          "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+        },
+        "fit": {
+          "value": 0.65,
+          "source": "model-judgment",
+          "basis": "operator estimate of CV against the posting"
+        },
+        "liveness": {
+          "value": 1,
+          "source": "record",
+          "basis": "npm run ats:liveness, checked 2026-10-03"
+        },
+        "timeline": {
+          "value": 1,
+          "source": "your-input",
+          "basis": "inside-buffer"
+        },
+        "funding": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-form-d-match"
+        }
+      },
+      "role_quality": {
+        "status": "ok",
+        "summary": "SOC 15-2051 row present (weighted 0.0 by the scorer); base row kept, 2 detailed row(s) skipped: Business Intelligence Analysts, Clinical Data Managers",
+        "row": {
+          "onet_soc_code": "15-2051.00",
+          "bls_soc_code": "15-2051",
+          "title": "Data Scientists",
+          "description": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.",
+          "job_zone": "4",
+          "alternate_title_count": "33",
+          "alternate_titles_sample": "Analytics Consultant; Applied Scientist; Data Analyst; Data Analytic Scientist; Data Analytics Manager; Data Analytics Scientist; Data Analytics Specialist; Data Architect",
+          "oews_year": "2024",
+          "employment": "233440.0",
+          "annual_mean_wage": "124590.0",
+          "annual_median_wage": "112590.0",
+          "hourly_mean_wage": "59.9",
+          "hourly_median_wage": "54.13",
+          "employment_prse": "1.7",
+          "ability_originality_lv": "",
+          "ability_problem_sensitivity_lv": "",
+          "ability_deductive_reasoning_lv": "",
+          "ability_inductive_reasoning_lv": "",
+          "ability_selective_attention_lv": "",
+          "ability_oral_comprehension_lv": "",
+          "skill_programming_lv": "",
+          "skill_critical_thinking_lv": "",
+          "skill_judgment_decision_making_lv": "",
+          "skill_complex_problem_solving_lv": "",
+          "skill_systems_analysis_lv": "",
+          "skill_systems_evaluation_lv": "",
+          "skill_social_perceptiveness_lv": "",
+          "skill_active_listening_lv": "",
+          "skill_persuasion_lv": "",
+          "skill_instructing_lv": "",
+          "skill_service_orientation_lv": "",
+          "cognitive_pivot_score": ""
+        },
+        "detailed_rows_skipped": [
+          {
+            "onet_soc_code": "15-2051.01",
+            "title": "Business Intelligence Analysts"
+          },
+          {
+            "onet_soc_code": "15-2051.02",
+            "title": "Clinical Data Managers"
+          }
+        ],
+        "source_file": "data/bls/compact/soc_occupation_compact.csv"
+      }
+    },
+    {
+      "company": "Airbnb Inc",
+      "title": "Data Scientist - Algorithms, Community Support",
+      "soc_code": "15-2051",
+      "url": "https://careers.airbnb.com/positions/8031901?gh_jid=8031901",
+      "bucket": "scored",
+      "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+      "timeline": {
+        "factor": 1,
+        "reason": "inside-buffer",
+        "trace": {
+          "as_of": "2026-10-03",
+          "expected_days_to_start": 120,
+          "projected_start": "2027-01-31",
+          "auth_type": "OPT",
+          "auth_start_date": "2027-01-15",
+          "auth_end_date": "2028-01-18",
+          "days_to_auth_end": 472,
+          "unemployment_days_used": 0,
+          "unemployment_days_added_by_this_process": 16,
+          "projected_unemployment_total": 16,
+          "unemployment_ceiling_days": 90,
+          "buffer_target_days": 60,
+          "stem_eligible_as_supplied": true
+        }
+      },
+      "terms": {
+        "sponsorship": {
+          "value": 0.9,
+          "source": "your-input",
+          "basis": "approvals:1000",
+          "evidence": {
+            "status": "ok",
+            "company_key": "airbnb",
+            "tier": null,
+            "approvals": 1000,
+            "rows_matched": 1,
+            "soc_narrowed": false,
+            "soc_code": null,
+            "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+            "source_columns": {
+              "company": "company_name",
+              "tier": null,
+              "count": "Total Approvals",
+              "soc": null
+            }
+          },
+          "tier_emitted": "Proven",
+          "tier_note": null,
+          "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+        },
+        "fit": {
+          "value": 0.6,
+          "source": "model-judgment",
+          "basis": "operator estimate of CV against the posting"
+        },
+        "liveness": {
+          "value": 1,
+          "source": "record",
+          "basis": "npm run ats:liveness, checked 2026-10-03"
+        },
+        "timeline": {
+          "value": 1,
+          "source": "your-input",
+          "basis": "inside-buffer"
+        },
+        "funding": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-form-d-match"
+        }
+      },
+      "role_quality": {
+        "status": "ok",
+        "summary": "SOC 15-2051 row present (weighted 0.0 by the scorer); base row kept, 2 detailed row(s) skipped: Business Intelligence Analysts, Clinical Data Managers",
+        "row": {
+          "onet_soc_code": "15-2051.00",
+          "bls_soc_code": "15-2051",
+          "title": "Data Scientists",
+          "description": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.",
+          "job_zone": "4",
+          "alternate_title_count": "33",
+          "alternate_titles_sample": "Analytics Consultant; Applied Scientist; Data Analyst; Data Analytic Scientist; Data Analytics Manager; Data Analytics Scientist; Data Analytics Specialist; Data Architect",
+          "oews_year": "2024",
+          "employment": "233440.0",
+          "annual_mean_wage": "124590.0",
+          "annual_median_wage": "112590.0",
+          "hourly_mean_wage": "59.9",
+          "hourly_median_wage": "54.13",
+          "employment_prse": "1.7",
+          "ability_originality_lv": "",
+          "ability_problem_sensitivity_lv": "",
+          "ability_deductive_reasoning_lv": "",
+          "ability_inductive_reasoning_lv": "",
+          "ability_selective_attention_lv": "",
+          "ability_oral_comprehension_lv": "",
+          "skill_programming_lv": "",
+          "skill_critical_thinking_lv": "",
+          "skill_judgment_decision_making_lv": "",
+          "skill_complex_problem_solving_lv": "",
+          "skill_systems_analysis_lv": "",
+          "skill_systems_evaluation_lv": "",
+          "skill_social_perceptiveness_lv": "",
+          "skill_active_listening_lv": "",
+          "skill_persuasion_lv": "",
+          "skill_instructing_lv": "",
+          "skill_service_orientation_lv": "",
+          "cognitive_pivot_score": ""
+        },
+        "detailed_rows_skipped": [
+          {
+            "onet_soc_code": "15-2051.01",
+            "title": "Business Intelligence Analysts"
+          },
+          {
+            "onet_soc_code": "15-2051.02",
+            "title": "Clinical Data Managers"
+          }
+        ],
+        "source_file": "data/bls/compact/soc_occupation_compact.csv"
+      }
+    },
+    {
+      "company": "Attentive Mobile Inc",
+      "title": "Senior Machine Learning Engineer",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/attentive/jobs/4120595009",
+      "bucket": "scored",
+      "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+      "timeline": {
+        "factor": 1,
+        "reason": "inside-buffer",
+        "trace": {
+          "as_of": "2026-10-03",
+          "expected_days_to_start": 120,
+          "projected_start": "2027-01-31",
+          "auth_type": "OPT",
+          "auth_start_date": "2027-01-15",
+          "auth_end_date": "2028-01-18",
+          "days_to_auth_end": 472,
+          "unemployment_days_used": 0,
+          "unemployment_days_added_by_this_process": 16,
+          "projected_unemployment_total": 16,
+          "unemployment_ceiling_days": 90,
+          "buffer_target_days": 60,
+          "stem_eligible_as_supplied": true
+        }
+      },
+      "terms": {
+        "sponsorship": {
+          "value": 0.9,
+          "source": "your-input",
+          "basis": "approvals:96",
+          "evidence": {
+            "status": "ok",
+            "company_key": "attentive mobile",
+            "tier": null,
+            "approvals": 96,
+            "rows_matched": 1,
+            "soc_narrowed": false,
+            "soc_code": null,
+            "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+            "source_columns": {
+              "company": "company_name",
+              "tier": null,
+              "count": "Total Approvals",
+              "soc": null
+            }
+          },
+          "tier_emitted": "Proven",
+          "tier_note": null,
+          "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+        },
+        "fit": {
+          "value": 0.35,
+          "source": "model-judgment",
+          "basis": "operator estimate of CV against the posting"
+        },
+        "liveness": {
+          "value": 1,
+          "source": "record",
+          "basis": "npm run ats:liveness, checked 2026-10-03"
+        },
+        "timeline": {
+          "value": 1,
+          "source": "your-input",
+          "basis": "inside-buffer"
+        },
+        "funding": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-form-d-match"
+        }
+      },
+      "role_quality": {
+        "status": "ok",
+        "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+        "row": {
+          "onet_soc_code": "15-1252.00",
+          "bls_soc_code": "15-1252",
+          "title": "Software Developers",
+          "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+          "job_zone": "4",
+          "alternate_title_count": "93",
+          "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+          "oews_year": "2024",
+          "employment": "1654440.0",
+          "annual_mean_wage": "144570.0",
+          "annual_median_wage": "133080.0",
+          "hourly_mean_wage": "69.5",
+          "hourly_median_wage": "63.98",
+          "employment_prse": "0.7",
+          "ability_originality_lv": "3.38",
+          "ability_problem_sensitivity_lv": "3.88",
+          "ability_deductive_reasoning_lv": "4.0",
+          "ability_inductive_reasoning_lv": "3.88",
+          "ability_selective_attention_lv": "2.88",
+          "ability_oral_comprehension_lv": "4.12",
+          "skill_programming_lv": "",
+          "skill_critical_thinking_lv": "4.12",
+          "skill_judgment_decision_making_lv": "3.75",
+          "skill_complex_problem_solving_lv": "3.5",
+          "skill_systems_analysis_lv": "3.88",
+          "skill_systems_evaluation_lv": "4.12",
+          "skill_social_perceptiveness_lv": "3.38",
+          "skill_active_listening_lv": "3.88",
+          "skill_persuasion_lv": "3.12",
+          "skill_instructing_lv": "3.12",
+          "skill_service_orientation_lv": "3.0",
+          "cognitive_pivot_score": "3.834"
+        },
+        "detailed_rows_skipped": [],
+        "source_file": "data/bls/compact/soc_occupation_compact.csv"
+      }
+    },
+    {
+      "company": "Cellanome Inc",
+      "title": "Machine Learning Engineer",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/cellanome/jobs/4683977006",
+      "bucket": "scored",
+      "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+      "timeline": {
+        "factor": 1,
+        "reason": "inside-buffer",
+        "trace": {
+          "as_of": "2026-10-03",
+          "expected_days_to_start": 75,
+          "projected_start": "2026-12-17",
+          "auth_type": "OPT",
+          "auth_start_date": "2027-01-15",
+          "auth_end_date": "2028-01-18",
+          "days_to_auth_end": 472,
+          "unemployment_days_used": 0,
+          "unemployment_days_added_by_this_process": 0,
+          "projected_unemployment_total": 0,
+          "unemployment_ceiling_days": 90,
+          "buffer_target_days": 60,
+          "stem_eligible_as_supplied": true
+        }
+      },
+      "terms": {
+        "sponsorship": {
+          "value": 0.6,
+          "source": "your-input",
+          "basis": "approvals:4",
+          "evidence": {
+            "status": "ok",
+            "company_key": "cellanome",
+            "tier": null,
+            "approvals": 4,
+            "rows_matched": 1,
+            "soc_narrowed": false,
+            "soc_code": null,
+            "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+            "source_columns": {
+              "company": "company_name",
+              "tier": null,
+              "count": "Total Approvals",
+              "soc": null
+            }
+          },
+          "tier_emitted": "Likely",
+          "tier_note": null,
+          "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+        },
+        "fit": {
+          "value": 0.55,
+          "source": "model-judgment",
+          "basis": "operator estimate of CV against the posting"
+        },
+        "liveness": {
+          "value": 1,
+          "source": "record",
+          "basis": "npm run ats:liveness, checked 2026-10-03"
+        },
+        "timeline": {
+          "value": 1,
+          "source": "your-input",
+          "basis": "inside-buffer"
+        },
+        "funding": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-form-d-match"
+        }
+      },
+      "role_quality": {
+        "status": "ok",
+        "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+        "row": {
+          "onet_soc_code": "15-1252.00",
+          "bls_soc_code": "15-1252",
+          "title": "Software Developers",
+          "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+          "job_zone": "4",
+          "alternate_title_count": "93",
+          "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+          "oews_year": "2024",
+          "employment": "1654440.0",
+          "annual_mean_wage": "144570.0",
+          "annual_median_wage": "133080.0",
+          "hourly_mean_wage": "69.5",
+          "hourly_median_wage": "63.98",
+          "employment_prse": "0.7",
+          "ability_originality_lv": "3.38",
+          "ability_problem_sensitivity_lv": "3.88",
+          "ability_deductive_reasoning_lv": "4.0",
+          "ability_inductive_reasoning_lv": "3.88",
+          "ability_selective_attention_lv": "2.88",
+          "ability_oral_comprehension_lv": "4.12",
+          "skill_programming_lv": "",
+          "skill_critical_thinking_lv": "4.12",
+          "skill_judgment_decision_making_lv": "3.75",
+          "skill_complex_problem_solving_lv": "3.5",
+          "skill_systems_analysis_lv": "3.88",
+          "skill_systems_evaluation_lv": "4.12",
+          "skill_social_perceptiveness_lv": "3.38",
+          "skill_active_listening_lv": "3.88",
+          "skill_persuasion_lv": "3.12",
+          "skill_instructing_lv": "3.12",
+          "skill_service_orientation_lv": "3.0",
+          "cognitive_pivot_score": "3.834"
+        },
+        "detailed_rows_skipped": [],
+        "source_file": "data/bls/compact/soc_occupation_compact.csv"
+      }
+    },
+    {
+      "company": "FourKites Inc",
+      "title": "Senior AI Engineer",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/fourkites/jobs/8212401",
+      "bucket": "scored",
+      "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+      "timeline": {
+        "factor": 1,
+        "reason": "inside-buffer",
+        "trace": {
+          "as_of": "2026-10-03",
+          "expected_days_to_start": 90,
+          "projected_start": "2027-01-01",
+          "auth_type": "OPT",
+          "auth_start_date": "2027-01-15",
+          "auth_end_date": "2028-01-18",
+          "days_to_auth_end": 472,
+          "unemployment_days_used": 0,
+          "unemployment_days_added_by_this_process": 0,
+          "projected_unemployment_total": 0,
+          "unemployment_ceiling_days": 90,
+          "buffer_target_days": 60,
+          "stem_eligible_as_supplied": true
+        }
+      },
+      "terms": {
+        "sponsorship": {
+          "value": 0.6,
+          "source": "your-input",
+          "basis": "approvals:8",
+          "evidence": {
+            "status": "ok",
+            "company_key": "fourkites",
+            "tier": null,
+            "approvals": 8,
+            "rows_matched": 1,
+            "soc_narrowed": false,
+            "soc_code": null,
+            "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+            "source_columns": {
+              "company": "company_name",
+              "tier": null,
+              "count": "Total Approvals",
+              "soc": null
+            }
+          },
+          "tier_emitted": "Likely",
+          "tier_note": null,
+          "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+        },
+        "fit": {
+          "value": 0.4,
+          "source": "model-judgment",
+          "basis": "operator estimate of CV against the posting"
+        },
+        "liveness": {
+          "value": 1,
+          "source": "record",
+          "basis": "npm run ats:liveness, checked 2026-10-03"
+        },
+        "timeline": {
+          "value": 1,
+          "source": "your-input",
+          "basis": "inside-buffer"
+        },
+        "funding": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-form-d-match"
+        }
+      },
+      "role_quality": {
+        "status": "ok",
+        "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+        "row": {
+          "onet_soc_code": "15-1252.00",
+          "bls_soc_code": "15-1252",
+          "title": "Software Developers",
+          "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+          "job_zone": "4",
+          "alternate_title_count": "93",
+          "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+          "oews_year": "2024",
+          "employment": "1654440.0",
+          "annual_mean_wage": "144570.0",
+          "annual_median_wage": "133080.0",
+          "hourly_mean_wage": "69.5",
+          "hourly_median_wage": "63.98",
+          "employment_prse": "0.7",
+          "ability_originality_lv": "3.38",
+          "ability_problem_sensitivity_lv": "3.88",
+          "ability_deductive_reasoning_lv": "4.0",
+          "ability_inductive_reasoning_lv": "3.88",
+          "ability_selective_attention_lv": "2.88",
+          "ability_oral_comprehension_lv": "4.12",
+          "skill_programming_lv": "",
+          "skill_critical_thinking_lv": "4.12",
+          "skill_judgment_decision_making_lv": "3.75",
+          "skill_complex_problem_solving_lv": "3.5",
+          "skill_systems_analysis_lv": "3.88",
+          "skill_systems_evaluation_lv": "4.12",
+          "skill_social_perceptiveness_lv": "3.38",
+          "skill_active_listening_lv": "3.88",
+          "skill_persuasion_lv": "3.12",
+          "skill_instructing_lv": "3.12",
+          "skill_service_orientation_lv": "3.0",
+          "cognitive_pivot_score": "3.834"
+        },
+        "detailed_rows_skipped": [],
+        "source_file": "data/bls/compact/soc_occupation_compact.csv"
+      }
+    },
+    {
+      "company": "Anthropic",
+      "title": "Data Engineer",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/anthropic/jobs/4956672008",
+      "bucket": "network",
+      "next_action": "no sponsorship record found (no-sponsor-record), which is not the same as a record of non-sponsorship; informational interview before any application",
+      "timeline": {
+        "factor": 1,
+        "reason": "inside-buffer",
+        "trace": {
+          "as_of": "2026-10-03",
+          "expected_days_to_start": 150,
+          "projected_start": "2027-03-02",
+          "auth_type": "OPT",
+          "auth_start_date": "2027-01-15",
+          "auth_end_date": "2028-01-18",
+          "days_to_auth_end": 472,
+          "unemployment_days_used": 0,
+          "unemployment_days_added_by_this_process": 46,
+          "projected_unemployment_total": 46,
+          "unemployment_ceiling_days": 90,
+          "buffer_target_days": 60,
+          "stem_eligible_as_supplied": true
+        }
+      },
+      "terms": {
+        "sponsorship": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-sponsor-record",
+          "evidence": {
+            "status": "missing",
+            "reason": "no-sponsor-record",
+            "company_key": "anthropic",
+            "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv"
+          },
+          "tier_emitted": null,
+          "tier_note": "no sponsorship evidence",
+          "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+        },
+        "fit": {
+          "value": 0.45,
+          "source": "model-judgment",
+          "basis": "operator estimate of CV against the posting"
+        },
+        "liveness": {
+          "value": 1,
+          "source": "record",
+          "basis": "npm run ats:liveness, checked 2026-10-03"
+        },
+        "timeline": {
+          "value": 1,
+          "source": "your-input",
+          "basis": "inside-buffer"
+        },
+        "funding": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-form-d-match"
+        }
+      },
+      "role_quality": {
+        "status": "ok",
+        "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+        "row": {
+          "onet_soc_code": "15-1252.00",
+          "bls_soc_code": "15-1252",
+          "title": "Software Developers",
+          "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+          "job_zone": "4",
+          "alternate_title_count": "93",
+          "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+          "oews_year": "2024",
+          "employment": "1654440.0",
+          "annual_mean_wage": "144570.0",
+          "annual_median_wage": "133080.0",
+          "hourly_mean_wage": "69.5",
+          "hourly_median_wage": "63.98",
+          "employment_prse": "0.7",
+          "ability_originality_lv": "3.38",
+          "ability_problem_sensitivity_lv": "3.88",
+          "ability_deductive_reasoning_lv": "4.0",
+          "ability_inductive_reasoning_lv": "3.88",
+          "ability_selective_attention_lv": "2.88",
+          "ability_oral_comprehension_lv": "4.12",
+          "skill_programming_lv": "",
+          "skill_critical_thinking_lv": "4.12",
+          "skill_judgment_decision_making_lv": "3.75",
+          "skill_complex_problem_solving_lv": "3.5",
+          "skill_systems_analysis_lv": "3.88",
+          "skill_systems_evaluation_lv": "4.12",
+          "skill_social_perceptiveness_lv": "3.38",
+          "skill_active_listening_lv": "3.88",
+          "skill_persuasion_lv": "3.12",
+          "skill_instructing_lv": "3.12",
+          "skill_service_orientation_lv": "3.0",
+          "cognitive_pivot_score": "3.834"
+        },
+        "detailed_rows_skipped": [],
+        "source_file": "data/bls/compact/soc_occupation_compact.csv"
+      }
+    },
+    {
+      "company": "Scale AI",
+      "title": "Machine Learning Research Scientist, Evaluations",
+      "soc_code": "15-2051",
+      "url": "https://job-boards.greenhouse.io/scaleai/jobs/4728014005",
+      "bucket": "network",
+      "next_action": "no sponsorship record found (no-sponsor-record), which is not the same as a record of non-sponsorship; informational interview before any application",
+      "timeline": {
+        "factor": 1,
+        "reason": "inside-buffer",
+        "trace": {
+          "as_of": "2026-10-03",
+          "expected_days_to_start": 120,
+          "projected_start": "2027-01-31",
+          "auth_type": "OPT",
+          "auth_start_date": "2027-01-15",
+          "auth_end_date": "2028-01-18",
+          "days_to_auth_end": 472,
+          "unemployment_days_used": 0,
+          "unemployment_days_added_by_this_process": 16,
+          "projected_unemployment_total": 16,
+          "unemployment_ceiling_days": 90,
+          "buffer_target_days": 60,
+          "stem_eligible_as_supplied": true
+        }
+      },
+      "terms": {
+        "sponsorship": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-sponsor-record",
+          "evidence": {
+            "status": "missing",
+            "reason": "no-sponsor-record",
+            "company_key": "scale ai",
+            "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv"
+          },
+          "tier_emitted": null,
+          "tier_note": "no sponsorship evidence",
+          "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+        },
+        "fit": {
+          "value": 0.4,
+          "source": "model-judgment",
+          "basis": "operator estimate of CV against the posting"
+        },
+        "liveness": {
+          "value": 1,
+          "source": "record",
+          "basis": "npm run ats:liveness, checked 2026-10-03"
+        },
+        "timeline": {
+          "value": 1,
+          "source": "your-input",
+          "basis": "inside-buffer"
+        },
+        "funding": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-form-d-match"
+        }
+      },
+      "role_quality": {
+        "status": "ok",
+        "summary": "SOC 15-2051 row present (weighted 0.0 by the scorer); base row kept, 2 detailed row(s) skipped: Business Intelligence Analysts, Clinical Data Managers",
+        "row": {
+          "onet_soc_code": "15-2051.00",
+          "bls_soc_code": "15-2051",
+          "title": "Data Scientists",
+          "description": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.",
+          "job_zone": "4",
+          "alternate_title_count": "33",
+          "alternate_titles_sample": "Analytics Consultant; Applied Scientist; Data Analyst; Data Analytic Scientist; Data Analytics Manager; Data Analytics Scientist; Data Analytics Specialist; Data Architect",
+          "oews_year": "2024",
+          "employment": "233440.0",
+          "annual_mean_wage": "124590.0",
+          "annual_median_wage": "112590.0",
+          "hourly_mean_wage": "59.9",
+          "hourly_median_wage": "54.13",
+          "employment_prse": "1.7",
+          "ability_originality_lv": "",
+          "ability_problem_sensitivity_lv": "",
+          "ability_deductive_reasoning_lv": "",
+          "ability_inductive_reasoning_lv": "",
+          "ability_selective_attention_lv": "",
+          "ability_oral_comprehension_lv": "",
+          "skill_programming_lv": "",
+          "skill_critical_thinking_lv": "",
+          "skill_judgment_decision_making_lv": "",
+          "skill_complex_problem_solving_lv": "",
+          "skill_systems_analysis_lv": "",
+          "skill_systems_evaluation_lv": "",
+          "skill_social_perceptiveness_lv": "",
+          "skill_active_listening_lv": "",
+          "skill_persuasion_lv": "",
+          "skill_instructing_lv": "",
+          "skill_service_orientation_lv": "",
+          "cognitive_pivot_score": ""
+        },
+        "detailed_rows_skipped": [
+          {
+            "onet_soc_code": "15-2051.01",
+            "title": "Business Intelligence Analysts"
+          },
+          {
+            "onet_soc_code": "15-2051.02",
+            "title": "Clinical Data Managers"
+          }
+        ],
+        "source_file": "data/bls/compact/soc_occupation_compact.csv"
+      }
+    },
+    {
+      "company": "Vercel Inc",
+      "title": "Software Engineer, AI SDK",
+      "soc_code": "15-1252",
+      "url": "https://job-boards.greenhouse.io/vercel/jobs/5474915004",
+      "bucket": "network",
+      "next_action": "no sponsorship record found (empty-approvals-cell), which is not the same as a record of non-sponsorship; informational interview before any application",
+      "timeline": {
+        "factor": 1,
+        "reason": "inside-buffer",
+        "trace": {
+          "as_of": "2026-10-03",
+          "expected_days_to_start": 105,
+          "projected_start": "2027-01-16",
+          "auth_type": "OPT",
+          "auth_start_date": "2027-01-15",
+          "auth_end_date": "2028-01-18",
+          "days_to_auth_end": 472,
+          "unemployment_days_used": 0,
+          "unemployment_days_added_by_this_process": 1,
+          "projected_unemployment_total": 1,
+          "unemployment_ceiling_days": 90,
+          "buffer_target_days": 60,
+          "stem_eligible_as_supplied": true
+        }
+      },
+      "terms": {
+        "sponsorship": {
+          "value": null,
+          "source": "missing",
+          "basis": "empty-approvals-cell",
+          "evidence": {
+            "status": "missing",
+            "reason": "empty-approvals-cell",
+            "company_key": "vercel",
+            "rows_matched": 1,
+            "unparseable": [],
+            "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv"
+          },
+          "tier_emitted": null,
+          "tier_note": "no sponsorship evidence",
+          "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+        },
+        "fit": {
+          "value": 0.45,
+          "source": "model-judgment",
+          "basis": "operator estimate of CV against the posting"
+        },
+        "liveness": {
+          "value": 1,
+          "source": "record",
+          "basis": "npm run ats:liveness, checked 2026-10-03"
+        },
+        "timeline": {
+          "value": 1,
+          "source": "your-input",
+          "basis": "inside-buffer"
+        },
+        "funding": {
+          "value": null,
+          "source": "missing",
+          "basis": "no-form-d-match"
+        }
+      },
+      "role_quality": {
+        "status": "ok",
+        "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+        "row": {
+          "onet_soc_code": "15-1252.00",
+          "bls_soc_code": "15-1252",
+          "title": "Software Developers",
+          "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+          "job_zone": "4",
+          "alternate_title_count": "93",
+          "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+          "oews_year": "2024",
+          "employment": "1654440.0",
+          "annual_mean_wage": "144570.0",
+          "annual_median_wage": "133080.0",
+          "hourly_mean_wage": "69.5",
+          "hourly_median_wage": "63.98",
+          "employment_prse": "0.7",
+          "ability_originality_lv": "3.38",
+          "ability_problem_sensitivity_lv": "3.88",
+          "ability_deductive_reasoning_lv": "4.0",
+          "ability_inductive_reasoning_lv": "3.88",
+          "ability_selective_attention_lv": "2.88",
+          "ability_oral_comprehension_lv": "4.12",
+          "skill_programming_lv": "",
+          "skill_critical_thinking_lv": "4.12",
+          "skill_judgment_decision_making_lv": "3.75",
+          "skill_complex_problem_solving_lv": "3.5",
+          "skill_systems_analysis_lv": "3.88",
+          "skill_systems_evaluation_lv": "4.12",
+          "skill_social_perceptiveness_lv": "3.38",
+          "skill_active_listening_lv": "3.88",
+          "skill_persuasion_lv": "3.12",
+          "skill_instructing_lv": "3.12",
+          "skill_service_orientation_lv": "3.0",
+          "cognitive_pivot_score": "3.834"
+        },
+        "detailed_rows_skipped": [],
+        "source_file": "data/bls/compact/soc_occupation_compact.csv"
+      }
+    }
+  ],
+  "buckets": {
+    "scored": [
+      {
+        "company": "Reddit Inc",
+        "title": "Machine Learning Engineer",
+        "soc_code": "15-1252",
+        "url": "https://job-boards.greenhouse.io/reddit/jobs/8244082",
+        "bucket": "scored",
+        "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+        "timeline": {
+          "factor": 1,
+          "reason": "inside-buffer",
+          "trace": {
+            "as_of": "2026-10-03",
+            "expected_days_to_start": 120,
+            "projected_start": "2027-01-31",
+            "auth_type": "OPT",
+            "auth_start_date": "2027-01-15",
+            "auth_end_date": "2028-01-18",
+            "days_to_auth_end": 472,
+            "unemployment_days_used": 0,
+            "unemployment_days_added_by_this_process": 16,
+            "projected_unemployment_total": 16,
+            "unemployment_ceiling_days": 90,
+            "buffer_target_days": 60,
+            "stem_eligible_as_supplied": true
+          }
+        },
+        "terms": {
+          "sponsorship": {
+            "value": 0.9,
+            "source": "your-input",
+            "basis": "approvals:408",
+            "evidence": {
+              "status": "ok",
+              "company_key": "reddit",
+              "tier": null,
+              "approvals": 408,
+              "rows_matched": 1,
+              "soc_narrowed": false,
+              "soc_code": null,
+              "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+              "source_columns": {
+                "company": "company_name",
+                "tier": null,
+                "count": "Total Approvals",
+                "soc": null
+              }
+            },
+            "tier_emitted": "Proven",
+            "tier_note": null,
+            "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+          },
+          "fit": {
+            "value": 0.6,
+            "source": "model-judgment",
+            "basis": "operator estimate of CV against the posting"
+          },
+          "liveness": {
+            "value": 1,
+            "source": "record",
+            "basis": "npm run ats:liveness, checked 2026-10-03"
+          },
+          "timeline": {
+            "value": 1,
+            "source": "your-input",
+            "basis": "inside-buffer"
+          },
+          "funding": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-form-d-match"
+          }
+        },
+        "role_quality": {
+          "status": "ok",
+          "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+          "row": {
+            "onet_soc_code": "15-1252.00",
+            "bls_soc_code": "15-1252",
+            "title": "Software Developers",
+            "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+            "job_zone": "4",
+            "alternate_title_count": "93",
+            "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+            "oews_year": "2024",
+            "employment": "1654440.0",
+            "annual_mean_wage": "144570.0",
+            "annual_median_wage": "133080.0",
+            "hourly_mean_wage": "69.5",
+            "hourly_median_wage": "63.98",
+            "employment_prse": "0.7",
+            "ability_originality_lv": "3.38",
+            "ability_problem_sensitivity_lv": "3.88",
+            "ability_deductive_reasoning_lv": "4.0",
+            "ability_inductive_reasoning_lv": "3.88",
+            "ability_selective_attention_lv": "2.88",
+            "ability_oral_comprehension_lv": "4.12",
+            "skill_programming_lv": "",
+            "skill_critical_thinking_lv": "4.12",
+            "skill_judgment_decision_making_lv": "3.75",
+            "skill_complex_problem_solving_lv": "3.5",
+            "skill_systems_analysis_lv": "3.88",
+            "skill_systems_evaluation_lv": "4.12",
+            "skill_social_perceptiveness_lv": "3.38",
+            "skill_active_listening_lv": "3.88",
+            "skill_persuasion_lv": "3.12",
+            "skill_instructing_lv": "3.12",
+            "skill_service_orientation_lv": "3.0",
+            "cognitive_pivot_score": "3.834"
+          },
+          "detailed_rows_skipped": [],
+          "source_file": "data/bls/compact/soc_occupation_compact.csv"
+        }
+      },
+      {
+        "company": "Discord Inc",
+        "title": "Data Scientist - Client Platform",
+        "soc_code": "15-2051",
+        "url": "https://job-boards.greenhouse.io/discord/jobs/8840756002",
+        "bucket": "scored",
+        "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+        "timeline": {
+          "factor": 1,
+          "reason": "inside-buffer",
+          "trace": {
+            "as_of": "2026-10-03",
+            "expected_days_to_start": 105,
+            "projected_start": "2027-01-16",
+            "auth_type": "OPT",
+            "auth_start_date": "2027-01-15",
+            "auth_end_date": "2028-01-18",
+            "days_to_auth_end": 472,
+            "unemployment_days_used": 0,
+            "unemployment_days_added_by_this_process": 1,
+            "projected_unemployment_total": 1,
+            "unemployment_ceiling_days": 90,
+            "buffer_target_days": 60,
+            "stem_eligible_as_supplied": true
+          }
+        },
+        "terms": {
+          "sponsorship": {
+            "value": 0.9,
+            "source": "your-input",
+            "basis": "approvals:122",
+            "evidence": {
+              "status": "ok",
+              "company_key": "discord",
+              "tier": null,
+              "approvals": 122,
+              "rows_matched": 1,
+              "soc_narrowed": false,
+              "soc_code": null,
+              "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+              "source_columns": {
+                "company": "company_name",
+                "tier": null,
+                "count": "Total Approvals",
+                "soc": null
+              }
+            },
+            "tier_emitted": "Proven",
+            "tier_note": null,
+            "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+          },
+          "fit": {
+            "value": 0.7,
+            "source": "model-judgment",
+            "basis": "operator estimate of CV against the posting"
+          },
+          "liveness": {
+            "value": 1,
+            "source": "record",
+            "basis": "npm run ats:liveness, checked 2026-10-03"
+          },
+          "timeline": {
+            "value": 1,
+            "source": "your-input",
+            "basis": "inside-buffer"
+          },
+          "funding": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-form-d-match"
+          }
+        },
+        "role_quality": {
+          "status": "ok",
+          "summary": "SOC 15-2051 row present (weighted 0.0 by the scorer); base row kept, 2 detailed row(s) skipped: Business Intelligence Analysts, Clinical Data Managers",
+          "row": {
+            "onet_soc_code": "15-2051.00",
+            "bls_soc_code": "15-2051",
+            "title": "Data Scientists",
+            "description": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.",
+            "job_zone": "4",
+            "alternate_title_count": "33",
+            "alternate_titles_sample": "Analytics Consultant; Applied Scientist; Data Analyst; Data Analytic Scientist; Data Analytics Manager; Data Analytics Scientist; Data Analytics Specialist; Data Architect",
+            "oews_year": "2024",
+            "employment": "233440.0",
+            "annual_mean_wage": "124590.0",
+            "annual_median_wage": "112590.0",
+            "hourly_mean_wage": "59.9",
+            "hourly_median_wage": "54.13",
+            "employment_prse": "1.7",
+            "ability_originality_lv": "",
+            "ability_problem_sensitivity_lv": "",
+            "ability_deductive_reasoning_lv": "",
+            "ability_inductive_reasoning_lv": "",
+            "ability_selective_attention_lv": "",
+            "ability_oral_comprehension_lv": "",
+            "skill_programming_lv": "",
+            "skill_critical_thinking_lv": "",
+            "skill_judgment_decision_making_lv": "",
+            "skill_complex_problem_solving_lv": "",
+            "skill_systems_analysis_lv": "",
+            "skill_systems_evaluation_lv": "",
+            "skill_social_perceptiveness_lv": "",
+            "skill_active_listening_lv": "",
+            "skill_persuasion_lv": "",
+            "skill_instructing_lv": "",
+            "skill_service_orientation_lv": "",
+            "cognitive_pivot_score": ""
+          },
+          "detailed_rows_skipped": [
+            {
+              "onet_soc_code": "15-2051.01",
+              "title": "Business Intelligence Analysts"
+            },
+            {
+              "onet_soc_code": "15-2051.02",
+              "title": "Clinical Data Managers"
+            }
+          ],
+          "source_file": "data/bls/compact/soc_occupation_compact.csv"
+        }
+      },
+      {
+        "company": "Moloco Inc",
+        "title": "Data Scientist II, Product - Moloco Commerce Media",
+        "soc_code": "15-2051",
+        "url": "https://job-boards.greenhouse.io/moloco/jobs/7985823003",
+        "bucket": "scored",
+        "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+        "timeline": {
+          "factor": 1,
+          "reason": "inside-buffer",
+          "trace": {
+            "as_of": "2026-10-03",
+            "expected_days_to_start": 90,
+            "projected_start": "2027-01-01",
+            "auth_type": "OPT",
+            "auth_start_date": "2027-01-15",
+            "auth_end_date": "2028-01-18",
+            "days_to_auth_end": 472,
+            "unemployment_days_used": 0,
+            "unemployment_days_added_by_this_process": 0,
+            "projected_unemployment_total": 0,
+            "unemployment_ceiling_days": 90,
+            "buffer_target_days": 60,
+            "stem_eligible_as_supplied": true
+          }
+        },
+        "terms": {
+          "sponsorship": {
+            "value": 0.9,
+            "source": "your-input",
+            "basis": "approvals:200",
+            "evidence": {
+              "status": "ok",
+              "company_key": "moloco",
+              "tier": null,
+              "approvals": 200,
+              "rows_matched": 1,
+              "soc_narrowed": false,
+              "soc_code": null,
+              "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+              "source_columns": {
+                "company": "company_name",
+                "tier": null,
+                "count": "Total Approvals",
+                "soc": null
+              }
+            },
+            "tier_emitted": "Proven",
+            "tier_note": null,
+            "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+          },
+          "fit": {
+            "value": 0.65,
+            "source": "model-judgment",
+            "basis": "operator estimate of CV against the posting"
+          },
+          "liveness": {
+            "value": 1,
+            "source": "record",
+            "basis": "npm run ats:liveness, checked 2026-10-03"
+          },
+          "timeline": {
+            "value": 1,
+            "source": "your-input",
+            "basis": "inside-buffer"
+          },
+          "funding": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-form-d-match"
+          }
+        },
+        "role_quality": {
+          "status": "ok",
+          "summary": "SOC 15-2051 row present (weighted 0.0 by the scorer); base row kept, 2 detailed row(s) skipped: Business Intelligence Analysts, Clinical Data Managers",
+          "row": {
+            "onet_soc_code": "15-2051.00",
+            "bls_soc_code": "15-2051",
+            "title": "Data Scientists",
+            "description": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.",
+            "job_zone": "4",
+            "alternate_title_count": "33",
+            "alternate_titles_sample": "Analytics Consultant; Applied Scientist; Data Analyst; Data Analytic Scientist; Data Analytics Manager; Data Analytics Scientist; Data Analytics Specialist; Data Architect",
+            "oews_year": "2024",
+            "employment": "233440.0",
+            "annual_mean_wage": "124590.0",
+            "annual_median_wage": "112590.0",
+            "hourly_mean_wage": "59.9",
+            "hourly_median_wage": "54.13",
+            "employment_prse": "1.7",
+            "ability_originality_lv": "",
+            "ability_problem_sensitivity_lv": "",
+            "ability_deductive_reasoning_lv": "",
+            "ability_inductive_reasoning_lv": "",
+            "ability_selective_attention_lv": "",
+            "ability_oral_comprehension_lv": "",
+            "skill_programming_lv": "",
+            "skill_critical_thinking_lv": "",
+            "skill_judgment_decision_making_lv": "",
+            "skill_complex_problem_solving_lv": "",
+            "skill_systems_analysis_lv": "",
+            "skill_systems_evaluation_lv": "",
+            "skill_social_perceptiveness_lv": "",
+            "skill_active_listening_lv": "",
+            "skill_persuasion_lv": "",
+            "skill_instructing_lv": "",
+            "skill_service_orientation_lv": "",
+            "cognitive_pivot_score": ""
+          },
+          "detailed_rows_skipped": [
+            {
+              "onet_soc_code": "15-2051.01",
+              "title": "Business Intelligence Analysts"
+            },
+            {
+              "onet_soc_code": "15-2051.02",
+              "title": "Clinical Data Managers"
+            }
+          ],
+          "source_file": "data/bls/compact/soc_occupation_compact.csv"
+        }
+      },
+      {
+        "company": "Airbnb Inc",
+        "title": "Data Scientist - Algorithms, Community Support",
+        "soc_code": "15-2051",
+        "url": "https://careers.airbnb.com/positions/8031901?gh_jid=8031901",
+        "bucket": "scored",
+        "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+        "timeline": {
+          "factor": 1,
+          "reason": "inside-buffer",
+          "trace": {
+            "as_of": "2026-10-03",
+            "expected_days_to_start": 120,
+            "projected_start": "2027-01-31",
+            "auth_type": "OPT",
+            "auth_start_date": "2027-01-15",
+            "auth_end_date": "2028-01-18",
+            "days_to_auth_end": 472,
+            "unemployment_days_used": 0,
+            "unemployment_days_added_by_this_process": 16,
+            "projected_unemployment_total": 16,
+            "unemployment_ceiling_days": 90,
+            "buffer_target_days": 60,
+            "stem_eligible_as_supplied": true
+          }
+        },
+        "terms": {
+          "sponsorship": {
+            "value": 0.9,
+            "source": "your-input",
+            "basis": "approvals:1000",
+            "evidence": {
+              "status": "ok",
+              "company_key": "airbnb",
+              "tier": null,
+              "approvals": 1000,
+              "rows_matched": 1,
+              "soc_narrowed": false,
+              "soc_code": null,
+              "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+              "source_columns": {
+                "company": "company_name",
+                "tier": null,
+                "count": "Total Approvals",
+                "soc": null
+              }
+            },
+            "tier_emitted": "Proven",
+            "tier_note": null,
+            "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+          },
+          "fit": {
+            "value": 0.6,
+            "source": "model-judgment",
+            "basis": "operator estimate of CV against the posting"
+          },
+          "liveness": {
+            "value": 1,
+            "source": "record",
+            "basis": "npm run ats:liveness, checked 2026-10-03"
+          },
+          "timeline": {
+            "value": 1,
+            "source": "your-input",
+            "basis": "inside-buffer"
+          },
+          "funding": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-form-d-match"
+          }
+        },
+        "role_quality": {
+          "status": "ok",
+          "summary": "SOC 15-2051 row present (weighted 0.0 by the scorer); base row kept, 2 detailed row(s) skipped: Business Intelligence Analysts, Clinical Data Managers",
+          "row": {
+            "onet_soc_code": "15-2051.00",
+            "bls_soc_code": "15-2051",
+            "title": "Data Scientists",
+            "description": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.",
+            "job_zone": "4",
+            "alternate_title_count": "33",
+            "alternate_titles_sample": "Analytics Consultant; Applied Scientist; Data Analyst; Data Analytic Scientist; Data Analytics Manager; Data Analytics Scientist; Data Analytics Specialist; Data Architect",
+            "oews_year": "2024",
+            "employment": "233440.0",
+            "annual_mean_wage": "124590.0",
+            "annual_median_wage": "112590.0",
+            "hourly_mean_wage": "59.9",
+            "hourly_median_wage": "54.13",
+            "employment_prse": "1.7",
+            "ability_originality_lv": "",
+            "ability_problem_sensitivity_lv": "",
+            "ability_deductive_reasoning_lv": "",
+            "ability_inductive_reasoning_lv": "",
+            "ability_selective_attention_lv": "",
+            "ability_oral_comprehension_lv": "",
+            "skill_programming_lv": "",
+            "skill_critical_thinking_lv": "",
+            "skill_judgment_decision_making_lv": "",
+            "skill_complex_problem_solving_lv": "",
+            "skill_systems_analysis_lv": "",
+            "skill_systems_evaluation_lv": "",
+            "skill_social_perceptiveness_lv": "",
+            "skill_active_listening_lv": "",
+            "skill_persuasion_lv": "",
+            "skill_instructing_lv": "",
+            "skill_service_orientation_lv": "",
+            "cognitive_pivot_score": ""
+          },
+          "detailed_rows_skipped": [
+            {
+              "onet_soc_code": "15-2051.01",
+              "title": "Business Intelligence Analysts"
+            },
+            {
+              "onet_soc_code": "15-2051.02",
+              "title": "Clinical Data Managers"
+            }
+          ],
+          "source_file": "data/bls/compact/soc_occupation_compact.csv"
+        }
+      },
+      {
+        "company": "Attentive Mobile Inc",
+        "title": "Senior Machine Learning Engineer",
+        "soc_code": "15-1252",
+        "url": "https://job-boards.greenhouse.io/attentive/jobs/4120595009",
+        "bucket": "scored",
+        "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+        "timeline": {
+          "factor": 1,
+          "reason": "inside-buffer",
+          "trace": {
+            "as_of": "2026-10-03",
+            "expected_days_to_start": 120,
+            "projected_start": "2027-01-31",
+            "auth_type": "OPT",
+            "auth_start_date": "2027-01-15",
+            "auth_end_date": "2028-01-18",
+            "days_to_auth_end": 472,
+            "unemployment_days_used": 0,
+            "unemployment_days_added_by_this_process": 16,
+            "projected_unemployment_total": 16,
+            "unemployment_ceiling_days": 90,
+            "buffer_target_days": 60,
+            "stem_eligible_as_supplied": true
+          }
+        },
+        "terms": {
+          "sponsorship": {
+            "value": 0.9,
+            "source": "your-input",
+            "basis": "approvals:96",
+            "evidence": {
+              "status": "ok",
+              "company_key": "attentive mobile",
+              "tier": null,
+              "approvals": 96,
+              "rows_matched": 1,
+              "soc_narrowed": false,
+              "soc_code": null,
+              "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+              "source_columns": {
+                "company": "company_name",
+                "tier": null,
+                "count": "Total Approvals",
+                "soc": null
+              }
+            },
+            "tier_emitted": "Proven",
+            "tier_note": null,
+            "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+          },
+          "fit": {
+            "value": 0.35,
+            "source": "model-judgment",
+            "basis": "operator estimate of CV against the posting"
+          },
+          "liveness": {
+            "value": 1,
+            "source": "record",
+            "basis": "npm run ats:liveness, checked 2026-10-03"
+          },
+          "timeline": {
+            "value": 1,
+            "source": "your-input",
+            "basis": "inside-buffer"
+          },
+          "funding": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-form-d-match"
+          }
+        },
+        "role_quality": {
+          "status": "ok",
+          "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+          "row": {
+            "onet_soc_code": "15-1252.00",
+            "bls_soc_code": "15-1252",
+            "title": "Software Developers",
+            "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+            "job_zone": "4",
+            "alternate_title_count": "93",
+            "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+            "oews_year": "2024",
+            "employment": "1654440.0",
+            "annual_mean_wage": "144570.0",
+            "annual_median_wage": "133080.0",
+            "hourly_mean_wage": "69.5",
+            "hourly_median_wage": "63.98",
+            "employment_prse": "0.7",
+            "ability_originality_lv": "3.38",
+            "ability_problem_sensitivity_lv": "3.88",
+            "ability_deductive_reasoning_lv": "4.0",
+            "ability_inductive_reasoning_lv": "3.88",
+            "ability_selective_attention_lv": "2.88",
+            "ability_oral_comprehension_lv": "4.12",
+            "skill_programming_lv": "",
+            "skill_critical_thinking_lv": "4.12",
+            "skill_judgment_decision_making_lv": "3.75",
+            "skill_complex_problem_solving_lv": "3.5",
+            "skill_systems_analysis_lv": "3.88",
+            "skill_systems_evaluation_lv": "4.12",
+            "skill_social_perceptiveness_lv": "3.38",
+            "skill_active_listening_lv": "3.88",
+            "skill_persuasion_lv": "3.12",
+            "skill_instructing_lv": "3.12",
+            "skill_service_orientation_lv": "3.0",
+            "cognitive_pivot_score": "3.834"
+          },
+          "detailed_rows_skipped": [],
+          "source_file": "data/bls/compact/soc_occupation_compact.csv"
+        }
+      },
+      {
+        "company": "Cellanome Inc",
+        "title": "Machine Learning Engineer",
+        "soc_code": "15-1252",
+        "url": "https://job-boards.greenhouse.io/cellanome/jobs/4683977006",
+        "bucket": "scored",
+        "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+        "timeline": {
+          "factor": 1,
+          "reason": "inside-buffer",
+          "trace": {
+            "as_of": "2026-10-03",
+            "expected_days_to_start": 75,
+            "projected_start": "2026-12-17",
+            "auth_type": "OPT",
+            "auth_start_date": "2027-01-15",
+            "auth_end_date": "2028-01-18",
+            "days_to_auth_end": 472,
+            "unemployment_days_used": 0,
+            "unemployment_days_added_by_this_process": 0,
+            "projected_unemployment_total": 0,
+            "unemployment_ceiling_days": 90,
+            "buffer_target_days": 60,
+            "stem_eligible_as_supplied": true
+          }
+        },
+        "terms": {
+          "sponsorship": {
+            "value": 0.6,
+            "source": "your-input",
+            "basis": "approvals:4",
+            "evidence": {
+              "status": "ok",
+              "company_key": "cellanome",
+              "tier": null,
+              "approvals": 4,
+              "rows_matched": 1,
+              "soc_narrowed": false,
+              "soc_code": null,
+              "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+              "source_columns": {
+                "company": "company_name",
+                "tier": null,
+                "count": "Total Approvals",
+                "soc": null
+              }
+            },
+            "tier_emitted": "Likely",
+            "tier_note": null,
+            "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+          },
+          "fit": {
+            "value": 0.55,
+            "source": "model-judgment",
+            "basis": "operator estimate of CV against the posting"
+          },
+          "liveness": {
+            "value": 1,
+            "source": "record",
+            "basis": "npm run ats:liveness, checked 2026-10-03"
+          },
+          "timeline": {
+            "value": 1,
+            "source": "your-input",
+            "basis": "inside-buffer"
+          },
+          "funding": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-form-d-match"
+          }
+        },
+        "role_quality": {
+          "status": "ok",
+          "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+          "row": {
+            "onet_soc_code": "15-1252.00",
+            "bls_soc_code": "15-1252",
+            "title": "Software Developers",
+            "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+            "job_zone": "4",
+            "alternate_title_count": "93",
+            "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+            "oews_year": "2024",
+            "employment": "1654440.0",
+            "annual_mean_wage": "144570.0",
+            "annual_median_wage": "133080.0",
+            "hourly_mean_wage": "69.5",
+            "hourly_median_wage": "63.98",
+            "employment_prse": "0.7",
+            "ability_originality_lv": "3.38",
+            "ability_problem_sensitivity_lv": "3.88",
+            "ability_deductive_reasoning_lv": "4.0",
+            "ability_inductive_reasoning_lv": "3.88",
+            "ability_selective_attention_lv": "2.88",
+            "ability_oral_comprehension_lv": "4.12",
+            "skill_programming_lv": "",
+            "skill_critical_thinking_lv": "4.12",
+            "skill_judgment_decision_making_lv": "3.75",
+            "skill_complex_problem_solving_lv": "3.5",
+            "skill_systems_analysis_lv": "3.88",
+            "skill_systems_evaluation_lv": "4.12",
+            "skill_social_perceptiveness_lv": "3.38",
+            "skill_active_listening_lv": "3.88",
+            "skill_persuasion_lv": "3.12",
+            "skill_instructing_lv": "3.12",
+            "skill_service_orientation_lv": "3.0",
+            "cognitive_pivot_score": "3.834"
+          },
+          "detailed_rows_skipped": [],
+          "source_file": "data/bls/compact/soc_occupation_compact.csv"
+        }
+      },
+      {
+        "company": "FourKites Inc",
+        "title": "Senior AI Engineer",
+        "soc_code": "15-1252",
+        "url": "https://job-boards.greenhouse.io/fourkites/jobs/8212401",
+        "bucket": "scored",
+        "next_action": "included in roles.json; run the scorer, then spend application time on the Applies only",
+        "timeline": {
+          "factor": 1,
+          "reason": "inside-buffer",
+          "trace": {
+            "as_of": "2026-10-03",
+            "expected_days_to_start": 90,
+            "projected_start": "2027-01-01",
+            "auth_type": "OPT",
+            "auth_start_date": "2027-01-15",
+            "auth_end_date": "2028-01-18",
+            "days_to_auth_end": 472,
+            "unemployment_days_used": 0,
+            "unemployment_days_added_by_this_process": 0,
+            "projected_unemployment_total": 0,
+            "unemployment_ceiling_days": 90,
+            "buffer_target_days": 60,
+            "stem_eligible_as_supplied": true
+          }
+        },
+        "terms": {
+          "sponsorship": {
+            "value": 0.6,
+            "source": "your-input",
+            "basis": "approvals:8",
+            "evidence": {
+              "status": "ok",
+              "company_key": "fourkites",
+              "tier": null,
+              "approvals": 8,
+              "rows_matched": 1,
+              "soc_narrowed": false,
+              "soc_code": null,
+              "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv",
+              "source_columns": {
+                "company": "company_name",
+                "tier": null,
+                "count": "Total Approvals",
+                "soc": null
+              }
+            },
+            "tier_emitted": "Likely",
+            "tier_note": null,
+            "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+          },
+          "fit": {
+            "value": 0.4,
+            "source": "model-judgment",
+            "basis": "operator estimate of CV against the posting"
+          },
+          "liveness": {
+            "value": 1,
+            "source": "record",
+            "basis": "npm run ats:liveness, checked 2026-10-03"
+          },
+          "timeline": {
+            "value": 1,
+            "source": "your-input",
+            "basis": "inside-buffer"
+          },
+          "funding": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-form-d-match"
+          }
+        },
+        "role_quality": {
+          "status": "ok",
+          "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+          "row": {
+            "onet_soc_code": "15-1252.00",
+            "bls_soc_code": "15-1252",
+            "title": "Software Developers",
+            "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+            "job_zone": "4",
+            "alternate_title_count": "93",
+            "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+            "oews_year": "2024",
+            "employment": "1654440.0",
+            "annual_mean_wage": "144570.0",
+            "annual_median_wage": "133080.0",
+            "hourly_mean_wage": "69.5",
+            "hourly_median_wage": "63.98",
+            "employment_prse": "0.7",
+            "ability_originality_lv": "3.38",
+            "ability_problem_sensitivity_lv": "3.88",
+            "ability_deductive_reasoning_lv": "4.0",
+            "ability_inductive_reasoning_lv": "3.88",
+            "ability_selective_attention_lv": "2.88",
+            "ability_oral_comprehension_lv": "4.12",
+            "skill_programming_lv": "",
+            "skill_critical_thinking_lv": "4.12",
+            "skill_judgment_decision_making_lv": "3.75",
+            "skill_complex_problem_solving_lv": "3.5",
+            "skill_systems_analysis_lv": "3.88",
+            "skill_systems_evaluation_lv": "4.12",
+            "skill_social_perceptiveness_lv": "3.38",
+            "skill_active_listening_lv": "3.88",
+            "skill_persuasion_lv": "3.12",
+            "skill_instructing_lv": "3.12",
+            "skill_service_orientation_lv": "3.0",
+            "cognitive_pivot_score": "3.834"
+          },
+          "detailed_rows_skipped": [],
+          "source_file": "data/bls/compact/soc_occupation_compact.csv"
+        }
+      }
+    ],
+    "needs_liveness": [],
+    "network": [
+      {
+        "company": "Anthropic",
+        "title": "Data Engineer",
+        "soc_code": "15-1252",
+        "url": "https://job-boards.greenhouse.io/anthropic/jobs/4956672008",
+        "bucket": "network",
+        "next_action": "no sponsorship record found (no-sponsor-record), which is not the same as a record of non-sponsorship; informational interview before any application",
+        "timeline": {
+          "factor": 1,
+          "reason": "inside-buffer",
+          "trace": {
+            "as_of": "2026-10-03",
+            "expected_days_to_start": 150,
+            "projected_start": "2027-03-02",
+            "auth_type": "OPT",
+            "auth_start_date": "2027-01-15",
+            "auth_end_date": "2028-01-18",
+            "days_to_auth_end": 472,
+            "unemployment_days_used": 0,
+            "unemployment_days_added_by_this_process": 46,
+            "projected_unemployment_total": 46,
+            "unemployment_ceiling_days": 90,
+            "buffer_target_days": 60,
+            "stem_eligible_as_supplied": true
+          }
+        },
+        "terms": {
+          "sponsorship": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-sponsor-record",
+            "evidence": {
+              "status": "missing",
+              "reason": "no-sponsor-record",
+              "company_key": "anthropic",
+              "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv"
+            },
+            "tier_emitted": null,
+            "tier_note": "no sponsorship evidence",
+            "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+          },
+          "fit": {
+            "value": 0.45,
+            "source": "model-judgment",
+            "basis": "operator estimate of CV against the posting"
+          },
+          "liveness": {
+            "value": 1,
+            "source": "record",
+            "basis": "npm run ats:liveness, checked 2026-10-03"
+          },
+          "timeline": {
+            "value": 1,
+            "source": "your-input",
+            "basis": "inside-buffer"
+          },
+          "funding": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-form-d-match"
+          }
+        },
+        "role_quality": {
+          "status": "ok",
+          "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+          "row": {
+            "onet_soc_code": "15-1252.00",
+            "bls_soc_code": "15-1252",
+            "title": "Software Developers",
+            "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+            "job_zone": "4",
+            "alternate_title_count": "93",
+            "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+            "oews_year": "2024",
+            "employment": "1654440.0",
+            "annual_mean_wage": "144570.0",
+            "annual_median_wage": "133080.0",
+            "hourly_mean_wage": "69.5",
+            "hourly_median_wage": "63.98",
+            "employment_prse": "0.7",
+            "ability_originality_lv": "3.38",
+            "ability_problem_sensitivity_lv": "3.88",
+            "ability_deductive_reasoning_lv": "4.0",
+            "ability_inductive_reasoning_lv": "3.88",
+            "ability_selective_attention_lv": "2.88",
+            "ability_oral_comprehension_lv": "4.12",
+            "skill_programming_lv": "",
+            "skill_critical_thinking_lv": "4.12",
+            "skill_judgment_decision_making_lv": "3.75",
+            "skill_complex_problem_solving_lv": "3.5",
+            "skill_systems_analysis_lv": "3.88",
+            "skill_systems_evaluation_lv": "4.12",
+            "skill_social_perceptiveness_lv": "3.38",
+            "skill_active_listening_lv": "3.88",
+            "skill_persuasion_lv": "3.12",
+            "skill_instructing_lv": "3.12",
+            "skill_service_orientation_lv": "3.0",
+            "cognitive_pivot_score": "3.834"
+          },
+          "detailed_rows_skipped": [],
+          "source_file": "data/bls/compact/soc_occupation_compact.csv"
+        }
+      },
+      {
+        "company": "Scale AI",
+        "title": "Machine Learning Research Scientist, Evaluations",
+        "soc_code": "15-2051",
+        "url": "https://job-boards.greenhouse.io/scaleai/jobs/4728014005",
+        "bucket": "network",
+        "next_action": "no sponsorship record found (no-sponsor-record), which is not the same as a record of non-sponsorship; informational interview before any application",
+        "timeline": {
+          "factor": 1,
+          "reason": "inside-buffer",
+          "trace": {
+            "as_of": "2026-10-03",
+            "expected_days_to_start": 120,
+            "projected_start": "2027-01-31",
+            "auth_type": "OPT",
+            "auth_start_date": "2027-01-15",
+            "auth_end_date": "2028-01-18",
+            "days_to_auth_end": 472,
+            "unemployment_days_used": 0,
+            "unemployment_days_added_by_this_process": 16,
+            "projected_unemployment_total": 16,
+            "unemployment_ceiling_days": 90,
+            "buffer_target_days": 60,
+            "stem_eligible_as_supplied": true
+          }
+        },
+        "terms": {
+          "sponsorship": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-sponsor-record",
+            "evidence": {
+              "status": "missing",
+              "reason": "no-sponsor-record",
+              "company_key": "scale ai",
+              "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv"
+            },
+            "tier_emitted": null,
+            "tier_note": "no sponsorship evidence",
+            "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+          },
+          "fit": {
+            "value": 0.4,
+            "source": "model-judgment",
+            "basis": "operator estimate of CV against the posting"
+          },
+          "liveness": {
+            "value": 1,
+            "source": "record",
+            "basis": "npm run ats:liveness, checked 2026-10-03"
+          },
+          "timeline": {
+            "value": 1,
+            "source": "your-input",
+            "basis": "inside-buffer"
+          },
+          "funding": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-form-d-match"
+          }
+        },
+        "role_quality": {
+          "status": "ok",
+          "summary": "SOC 15-2051 row present (weighted 0.0 by the scorer); base row kept, 2 detailed row(s) skipped: Business Intelligence Analysts, Clinical Data Managers",
+          "row": {
+            "onet_soc_code": "15-2051.00",
+            "bls_soc_code": "15-2051",
+            "title": "Data Scientists",
+            "description": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.",
+            "job_zone": "4",
+            "alternate_title_count": "33",
+            "alternate_titles_sample": "Analytics Consultant; Applied Scientist; Data Analyst; Data Analytic Scientist; Data Analytics Manager; Data Analytics Scientist; Data Analytics Specialist; Data Architect",
+            "oews_year": "2024",
+            "employment": "233440.0",
+            "annual_mean_wage": "124590.0",
+            "annual_median_wage": "112590.0",
+            "hourly_mean_wage": "59.9",
+            "hourly_median_wage": "54.13",
+            "employment_prse": "1.7",
+            "ability_originality_lv": "",
+            "ability_problem_sensitivity_lv": "",
+            "ability_deductive_reasoning_lv": "",
+            "ability_inductive_reasoning_lv": "",
+            "ability_selective_attention_lv": "",
+            "ability_oral_comprehension_lv": "",
+            "skill_programming_lv": "",
+            "skill_critical_thinking_lv": "",
+            "skill_judgment_decision_making_lv": "",
+            "skill_complex_problem_solving_lv": "",
+            "skill_systems_analysis_lv": "",
+            "skill_systems_evaluation_lv": "",
+            "skill_social_perceptiveness_lv": "",
+            "skill_active_listening_lv": "",
+            "skill_persuasion_lv": "",
+            "skill_instructing_lv": "",
+            "skill_service_orientation_lv": "",
+            "cognitive_pivot_score": ""
+          },
+          "detailed_rows_skipped": [
+            {
+              "onet_soc_code": "15-2051.01",
+              "title": "Business Intelligence Analysts"
+            },
+            {
+              "onet_soc_code": "15-2051.02",
+              "title": "Clinical Data Managers"
+            }
+          ],
+          "source_file": "data/bls/compact/soc_occupation_compact.csv"
+        }
+      },
+      {
+        "company": "Vercel Inc",
+        "title": "Software Engineer, AI SDK",
+        "soc_code": "15-1252",
+        "url": "https://job-boards.greenhouse.io/vercel/jobs/5474915004",
+        "bucket": "network",
+        "next_action": "no sponsorship record found (empty-approvals-cell), which is not the same as a record of non-sponsorship; informational interview before any application",
+        "timeline": {
+          "factor": 1,
+          "reason": "inside-buffer",
+          "trace": {
+            "as_of": "2026-10-03",
+            "expected_days_to_start": 105,
+            "projected_start": "2027-01-16",
+            "auth_type": "OPT",
+            "auth_start_date": "2027-01-15",
+            "auth_end_date": "2028-01-18",
+            "days_to_auth_end": 472,
+            "unemployment_days_used": 0,
+            "unemployment_days_added_by_this_process": 1,
+            "projected_unemployment_total": 1,
+            "unemployment_ceiling_days": 90,
+            "buffer_target_days": 60,
+            "stem_eligible_as_supplied": true
+          }
+        },
+        "terms": {
+          "sponsorship": {
+            "value": null,
+            "source": "missing",
+            "basis": "empty-approvals-cell",
+            "evidence": {
+              "status": "missing",
+              "reason": "empty-approvals-cell",
+              "company_key": "vercel",
+              "rows_matched": 1,
+              "unparseable": [],
+              "source_file": "data/80-days-to-stay/80-days-csv/mapped_student_employment_targets_v3.csv"
+            },
+            "tier_emitted": null,
+            "tier_note": "no sponsorship evidence",
+            "mapping_note": "the approvals count is the record; the CSV has no tier column, so the count-to-tier bands (COUNT_THRESHOLDS) and the tier-to-probability mapping (TIER_PROBABILITY) are both your-input"
+          },
+          "fit": {
+            "value": 0.45,
+            "source": "model-judgment",
+            "basis": "operator estimate of CV against the posting"
+          },
+          "liveness": {
+            "value": 1,
+            "source": "record",
+            "basis": "npm run ats:liveness, checked 2026-10-03"
+          },
+          "timeline": {
+            "value": 1,
+            "source": "your-input",
+            "basis": "inside-buffer"
+          },
+          "funding": {
+            "value": null,
+            "source": "missing",
+            "basis": "no-form-d-match"
+          }
+        },
+        "role_quality": {
+          "status": "ok",
+          "summary": "SOC 15-1252 row present (weighted 0.0 by the scorer)",
+          "row": {
+            "onet_soc_code": "15-1252.00",
+            "bls_soc_code": "15-1252",
+            "title": "Software Developers",
+            "description": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+            "job_zone": "4",
+            "alternate_title_count": "93",
+            "alternate_titles_sample": "AI Specialist (Artificial Intelligence Specialist); Application Analyst; Application Architect; Application Developer; Application Engineer; Application Integration Engineer; Application Integrator; Application Programmer",
+            "oews_year": "2024",
+            "employment": "1654440.0",
+            "annual_mean_wage": "144570.0",
+            "annual_median_wage": "133080.0",
+            "hourly_mean_wage": "69.5",
+            "hourly_median_wage": "63.98",
+            "employment_prse": "0.7",
+            "ability_originality_lv": "3.38",
+            "ability_problem_sensitivity_lv": "3.88",
+            "ability_deductive_reasoning_lv": "4.0",
+            "ability_inductive_reasoning_lv": "3.88",
+            "ability_selective_attention_lv": "2.88",
+            "ability_oral_comprehension_lv": "4.12",
+            "skill_programming_lv": "",
+            "skill_critical_thinking_lv": "4.12",
+            "skill_judgment_decision_making_lv": "3.75",
+            "skill_complex_problem_solving_lv": "3.5",
+            "skill_systems_analysis_lv": "3.88",
+            "skill_systems_evaluation_lv": "4.12",
+            "skill_social_perceptiveness_lv": "3.38",
+            "skill_active_listening_lv": "3.88",
+            "skill_persuasion_lv": "3.12",
+            "skill_instructing_lv": "3.12",
+            "skill_service_orientation_lv": "3.0",
+            "cognitive_pivot_score": "3.834"
+          },
+          "detailed_rows_skipped": [],
+          "source_file": "data/bls/compact/soc_occupation_compact.csv"
+        }
+      }
+    ],
+    "dropped": []
+  },
+  "counts": {
+    "in": 10,
+    "scored": 7,
+    "dropped": 0,
+    "network": 3,
+    "needs_liveness": 0,
+    "skip_rate": 0.3
+  },
+  "flags": {
+    "fit_rescue": [],
+    "fit_rescue_rule": "flag a scored role when fit x 0.3 > sponsorship x 0.35 (weights from scripts/score/role-scorer.mjs (config block of role-scores.json from a probe run))",
+    "fit_rescue_skipped": null
+  },
+  "not_verified": [
+    "Liveness is not fetched here. This tool reads a liveness value you obtained from npm run ats:liveness; it never invents one, and a role without one is held at the gate.",
+    "Fit is a model judgment supplied in the targets file. No CV is read and no resume file is touched.",
+    "Sponsorship tier or approval count is a record. The mapping from that record to a probability is an operator assumption, not a record, and the emitted sponsorship term is labelled your-input for that reason.",
+    "Sponsorship evidence is company-wide when the CSV has no SOC column, so it says nothing about the target occupation specifically.",
+    "Funding (Form D) is reported here and weighted nowhere: scripts/score/role-scorer.mjs has no funding term.",
+    "The scorer treats a gate at or below its gate_zero (0.05 in the shipped CONFIG) as closed, so any timeline factor in (0, 0.05] is a Skip there even though this run keeps the role.",
+    "Company joins are exact after suffix normalisation, with no fuzzy matching. A subsidiary filed under a different legal name will read as \"no record\" rather than as a non-sponsor.",
+    "Form D coverage is the shipped sample only; full quarters are gitignored, so absence of a filing is absence of evidence.",
+    "Role quality is reported but weighted 0.0 by scripts/score/role-scorer.mjs, so it changes no Apply/Consider/Skip outcome in this run.",
+    "expected_days_to_start is an estimate you supply per role, not an employer-published figure.",
+    "This run does not rule on STEM eligibility, does not compute your unemployment ceiling, and is not immigration advice."
+  ]
+}

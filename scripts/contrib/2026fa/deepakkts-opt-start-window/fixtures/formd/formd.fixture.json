@@ -1,0 +1,9 @@
+{
+  "metadata": { "_note": "Synthetic, in the shape of data/sec/form-d/processed/sample/*.sample.json" },
+  "companies": [
+    { "company": { "name": "Harborline Robotics, Inc." }, "filing": { "date_filed": "14-JUN-2026" } },
+    { "company": { "name": "Vantage Loom Technologies" }, "filing": { "date_filed": "02-AUG-2026" } },
+    { "company": { "name": "Brightwater Example Fund" }, "filing": { "date_filed": "2026-06-14" } },
+    { "company": { "name": "Saltmarsh Example Partners" }, "filing": { "date_filed": "31-FEB-2026" } }
+  ]
+}
